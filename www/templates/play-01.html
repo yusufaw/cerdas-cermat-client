@@ -1,0 +1,25 @@
+<ion-view title="Guess Guess">
+    <ion-content class="has-header padding">
+        <div class="scoreDisplay">
+            <h4>Score: {{score}}</h4>
+        </div>
+        <div class="resultDisplay">
+            <h1 ng-class="success">{{resultMessage}}</h1>
+        </div>
+        <div class="card">
+            <div class="item">
+                <div class="numberDisplay">
+                    <h1>{{number}}</h1>
+                </div>
+                <label class="item item-input">
+                    <span class="input-label">Answer</span>
+                    <input type="number" ng-model="userNumber" focus-me="getFocus">
+                </label>
+                <br />
+                <button class="button button-full button-positive" ng-click="calculate()">
+                    Jawab
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

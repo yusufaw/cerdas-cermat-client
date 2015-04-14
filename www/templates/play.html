@@ -1,0 +1,44 @@
+<ion-view>
+    <ion-content>
+        <div class="row" id="play-head">
+            <div class="col">
+                <div id="box-image-play">
+                    <div class="row">
+
+                    <img id="image-play" src="http://localhost:3000/images/images1.jpg">
+                        <h4 id="play-skor">SKOR<br />0</h4>
+                        </div>
+                </div>
+            </div>
+            <div class="col">
+                <div id="box-image-play">
+                    <div class="row">
+                        <h4 id="play-skor">SKOR<br />0</h4>
+                    <img id="image-play" src="http://localhost:3000/images/images1.jpg">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="resultDisplay">
+            <h3 ng-class="success">{{resultMessage}}</h3>
+        </div>
+        <div id="card-soal">
+        <div class="card">
+            <div class="item">
+                <div class="numberDisplay">
+                    <h3>{{soal}}</h3>
+                </div>
+
+            </div>
+        </div>
+        </div>
+    </ion-content>
+    <ion-footer-bar class="bar-stable">
+      <input type="text" ng-model="userAnswer" focus-me="getFocus" />
+  <br />
+  <button class="button button-full button-positive" ng-click="jawab(userAnswer)">
+      Jawab
+  </button>
+  </ion-footer-bar>
+</ion-view>

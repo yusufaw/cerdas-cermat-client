@@ -1,0 +1,13 @@
+<ion-view title="Kategori">
+    <ion-content class="has-header">
+        <ion-list>
+            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="category in categories" type="item-text-wrap" ng-click="search()">
+                <img ng-src="{{category.face}}">
+                {{category.name}}
+
+                <i class="icon ion-chevron-right icon-accessory"></i>
+
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

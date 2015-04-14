@@ -1,0 +1,169 @@
+/* Empty. Add your own CSS if you like */
+.numberDisplay > h1 {
+  font-size: 48px;
+  text-align: center;
+}
+
+.numberDisplay{
+  padding: 12px;
+}
+
+.scoreDisplay{
+  text-align: right;
+  padding-right: 12px;
+}
+
+.success{
+  color: #00CC00;
+}
+
+.failure{
+  color: #F80000;
+}
+
+.resultDisplay{
+  height: 60px;
+}
+
+.resultDisplay > h1 {
+  font-size: 48px;
+  text-align: center;
+}
+
+#profile-bg {
+    position: fixed;
+    left: 0;
+    top: 44px;
+    width: 100%;
+    height: 150px;
+
+         background: url('http://localhost:3000/images/images1.jpg') no-repeat transparent;
+    background-size: 100%;
+    background-position: 50% 20%;
+
+    text-align: center;
+}
+
+#content {
+    position: relative;
+    margin-top: 150px;
+    background-color: white;
+    box-shadow: 0px -1px 10px rgba(0,0,0,0.4);
+    padding-top: 200px;
+}
+
+#profile-info {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    z-index: 2;
+    text-align: center;
+}
+#profile-name {
+    color: #444;
+    font-size: 26px;
+}
+#profile-description {
+    font-size: 15px;
+    color: #888;
+}
+#profile-description a {
+    color: #888;
+}
+
+#profile-image {
+    display: block;
+    border-radius: 500px;
+    border: 1px solid #fff;
+    width: 128px;
+    height: 128px;
+    margin: 30px auto 0;
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+}
+#nyawa-image {
+    width: 32px;
+    height: 32px;
+    margin: 30px auto 0;
+}
+
+.list-item-content {
+    padding: 5px;
+}
+
+.list-item {
+    color: #666666;
+}
+
+.post {
+    color: #444;
+}
+
+.post-time {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 11px;
+    color: #888;
+}
+
+.post-profile-image {
+    display: inline-block;
+    vertical-align: top;
+    width: 48px;
+    height: 48px;
+    margin-right: 10px;
+}
+.post-options {
+    position: absolute;
+    font-size: 16px;
+    right: 5px;
+    bottom: 5px;
+    color: #888;
+}
+#ready-image {
+    display: block;
+    border-radius: 100px;
+    border: 1px solid #fff;
+    width: 64px;
+    height: 64px;
+    margin: 30px auto 0;
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+}
+#ready-info {
+    text-align: center;
+}
+#vs {
+    padding: 0 0 0 0;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+#image-play {
+    display: block;
+    border-radius: 100px;
+    border: 1px solid #fff;
+    width: 64px;
+    height: 64px;
+    margin: 3px auto 0;
+    box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+}
+#box-image-play {
+    text-align: center;
+}
+#box-col{
+    border: 1px solid #444;
+    border-radius: 0px;
+}
+#play-skor {
+    color: #444;
+    font-size: 20px;
+}
+#play-head {
+    background-color: yellow;
+}
+#card-soal{
+    position: relative;
+    bottom: 0px;
+    margin-bottom: 0px;
+}
