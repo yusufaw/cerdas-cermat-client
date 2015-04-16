@@ -1,39 +1,5 @@
 <ion-view>
-    <!--<ion-content><div style="height: 100%;">-->
-    <!--<div class="row" id="play-head">-->
-    <!--<div class="col">-->
-    <!--<div id="box-image-play">-->
-    <!--<div class="row">-->
-
-    <!--<img id="image-play" src="http://localhost:3000/images/images1.jpg">-->
-    <!--<h4 id="play-skor">SKOR<br/>0</h4>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="col">-->
-    <!--<div id="box-image-play">-->
-    <!--<div class="row">-->
-    <!--<h4 id="play-skor">SKOR<br/>0</h4>-->
-    <!--<img id="image-play" src="http://localhost:3000/images/images1.jpg">-->
-
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="row">-->
-    <!--<div class="col"><h3 ng-class="success">{{resultMessage}}</h3></div>-->
-    <!--</div>-->
-    <!--<div id="container-1">-->
-    <!--<h3>A{{soal}}</h3>-->
-    <!--</div>-->
-    <!--<div id="copyright">-->
-    <!--<input type="text" ng-model="userAnswer" focus-me="getFocus"/>-->
-    <!--<button class="button button-full button-positive" ng-click="jawab(userAnswer)">-->
-    <!--Jawab-->
-    <!--</button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <div style="height: 10%" class="card">
+    <div style="height: 15%" class="card">
         <div class="row" id="play-head">
             <div class="col">
                 <div id="box-image-play">
@@ -46,6 +12,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-center">
+                <h3>{{timer}}</h3>
             </div>
             <div class="col">
                 <div id="box-image-play">
@@ -66,7 +35,7 @@
             Silahkan jawab
         </div>
     </div>
-    <div style="height: 50%" class="card">
+    <div style="height: 45%" class="card">
         <div class="item item-text-wrap">
             <p>{{soal}}</p>
         </div>
