@@ -1,0 +1,63 @@
+<ion-view title="Account">
+    <ion-content ng-init="loadImages()">
+        <div style="height: 20%" class="card">
+            <div class="row" id="play-head">
+                <div class="col">
+                    <div id="box-image-play">
+                        <div class="row">
+
+                            <img id="image-play" src="http://placehold.it/50x50">
+                            <h4 id="play-skor">SKOR<br/>0</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div id="box-image-play">
+                        <div class="row">
+                            <h4 id="play-skor">SKOR<br/>0</h4>
+                            <img id="image-play" src="http://placehold.it/50x50">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card"style="height: 80%">
+            <div class="list">
+
+                <label class="item item-radio">
+                    <input type="radio" name="group">
+                    <div class="item-content">
+                        Go
+                    </div>
+                    <i class="radio-icon ion-checkmark"></i>
+
+                </label>
+                <label class="item item-radio">
+                    <input type="radio" name="group">
+                    <div class="item-content">
+                        Go
+                    </div>
+                    <i class="radio-icon ion-checkmark"></i>
+
+                </label>
+            </div>
+        </div>
+    </ion-content>
+
+    <ion-footer-bar class="bar-stable">
+
+    </ion-footer-bar>
+</ion-view>
+
+<script id="my-modal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar>
+            <h1 class="title">My Modal title</h1>
+            <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
+        </ion-header-bar>
+        <ion-content>
+            Hello!
+        </ion-content>
+    </ion-modal-view>
+</script>

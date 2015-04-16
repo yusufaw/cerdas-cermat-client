@@ -1,44 +1,90 @@
 <ion-view>
-    <ion-content>
+    <!--<ion-content><div style="height: 100%;">-->
+    <!--<div class="row" id="play-head">-->
+    <!--<div class="col">-->
+    <!--<div id="box-image-play">-->
+    <!--<div class="row">-->
+
+    <!--<img id="image-play" src="http://localhost:3000/images/images1.jpg">-->
+    <!--<h4 id="play-skor">SKOR<br/>0</h4>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col">-->
+    <!--<div id="box-image-play">-->
+    <!--<div class="row">-->
+    <!--<h4 id="play-skor">SKOR<br/>0</h4>-->
+    <!--<img id="image-play" src="http://localhost:3000/images/images1.jpg">-->
+
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row">-->
+    <!--<div class="col"><h3 ng-class="success">{{resultMessage}}</h3></div>-->
+    <!--</div>-->
+    <!--<div id="container-1">-->
+    <!--<h3>A{{soal}}</h3>-->
+    <!--</div>-->
+    <!--<div id="copyright">-->
+    <!--<input type="text" ng-model="userAnswer" focus-me="getFocus"/>-->
+    <!--<button class="button button-full button-positive" ng-click="jawab(userAnswer)">-->
+    <!--Jawab-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div style="height: 10%" class="card">
         <div class="row" id="play-head">
             <div class="col">
                 <div id="box-image-play">
                     <div class="row">
-
-                    <img id="image-play" src="http://localhost:3000/images/images1.jpg">
-                        <h4 id="play-skor">SKOR<br />0</h4>
+                        <div class="col">
+                            <img id="image-play" src="http://placehold.it/50x50">
                         </div>
+                        <div class="col">
+                            <h4 id="play-skor">SKOR<br/>0</h4>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col">
                 <div id="box-image-play">
                     <div class="row">
-                        <h4 id="play-skor">SKOR<br />0</h4>
-                    <img id="image-play" src="http://localhost:3000/images/images1.jpg">
-
+                        <div class="col">
+                            <h4 id="play-skor">SKOR<br/>0</h4>
+                        </div>
+                        <div class="col">
+                            <img id="image-play" src="http://placehold.it/50x50">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="resultDisplay">
-            <h3 ng-class="success">{{resultMessage}}</h3>
+    </div>
+    <div style="height: 10%" class="card">
+        <div class="item item-text-wrap text-center">
+            Silahkan jawab
         </div>
-        <div id="card-soal">
-        <div class="card">
-            <div class="item">
-                <div class="numberDisplay">
-                    <h3>{{soal}}</h3>
-                </div>
+    </div>
+    <div style="height: 50%" class="card">
+        <div class="item item-text-wrap">
+            <p>{{soal}}</p>
+        </div>
+    </div>
+    <div style="height: 30%" class="card">
+        <div class="item" ng-show="isShift">
+            <input class="item-input" ng-keyup="isTyping(userAnswer)" placeholder="Jawab" type="text" ng-model="userAnswer" focus-me="getFocus"/>
+            <button class="button button-full button-positive" ng-click="jawab(userAnswer)">
+                Jawab
+            </button>
+        </div>
+        <div class="item" ng-show="!isShift">
+            {{opponentAct}}
+        </div>
 
-            </div>
-        </div>
-        </div>
+    </div>
     </ion-content>
-    <ion-footer-bar class="bar-stable">
-      <input type="text" ng-model="userAnswer" focus-me="getFocus" />
-  <br />
-  <button class="button button-full button-positive" ng-click="jawab(userAnswer)">
-      Jawab
-  </button>
-  </ion-footer-bar>
+    <!--<ion-footer-bar class="bar-stable">-->
+
+    <!--</ion-footer-bar>-->
 </ion-view>

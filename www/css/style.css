@@ -160,10 +160,21 @@
     font-size: 20px;
 }
 #play-head {
-    background-color: yellow;
+    background-color: #1aacc3;
 }
 #card-soal{
     position: relative;
-    bottom: 0px;
-    margin-bottom: 0px;
+    height: 100%;
+}
+
+#container-1{
+    height:100%;
+    border-collapse:collapse;
+    display : table
+}
+
+#copyright{
+    display : table-row;
+    vertical-align : bottom;
+    height : 1px;
 }

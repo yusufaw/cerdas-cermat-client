@@ -68,16 +68,21 @@ angular.module('starter.controllers', [])
         });
 
     }])
-    .controller('PlayCtrl',['$scope', 'socket', '$timeout', function($scope, socket, $timeout){
+    .controller('PlayCtrl',['$scope', 'socket', '$timeout', '$ionicModal', function($scope, socket, $timeout, $ionicModal){
         socket.emit('ready', 'ok');
+        $scope.isShift = false;
+        $scope.opponentAct = '';
         socket.on('ready other', function(){
             socket.emit('all ready', 'ok');
         });
-        socket.on('soal', function(data){
-            $scope.soal = data;
+        socket.on('soal', function(data){ console.log(data);
+            if(data.user == localStorage.getItem('username')){
+                $scope.isShift = true;
+            }
+            $scope.soal = data.soal.pertanyaan;
         });
         $scope.jawab = function(userAnswer){
-            var data_jawaban = {'username': localStorage.getItem("username"), 'answer': userAnswer}
+            var data_jawaban = {'username': localStorage.getItem("username"), 'answer': userAnswer};
             socket.emit('answer', data_jawaban);
             $scope.userAnswer = '';
         };
@@ -87,7 +92,58 @@ angular.module('starter.controllers', [])
         });
 
         socket.on('result answered', function(data){
-            $scope.resultMessage = data.username +' menjawab '+data.answer;
+            $scope.opponentAct = data.username +' menjawab '+data.answer;
+        });
+
+        $scope.isTyping = function(userAnswer){
+            if(userAnswer.length > 1){
+                socket.emit('typing', localStorage.getItem('username'));
+            }
+            else{
+                socket.emit('stop typing', localStorage.getItem('username'));
+            }
+
+        };
+
+        socket.on('typing', function(data){ console.log(data);
+           $scope.opponentAct = data + ' sedang mengetik';
+        });
+
+        socket.on('stop typing', function(data){
+            $scope.opponentAct = "";
+        });
+
+        $scope.images = [];
+
+        $scope.loadImages = function() {
+            for(var i = 0; i < 16; i++) {
+                $scope.images.push({id: i, src: "http://placehold.it/50x50"});
+            }
+        };
+
+        $ionicModal.fromTemplateUrl('my-modal.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.modal = modal;
+        });
+        $scope.openModal = function() {
+            $scope.modal.show();
+        };
+        $scope.closeModal = function() {
+            $scope.modal.hide();
+        };
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hidden', function() {
+            // Execute action
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function() {
+            // Execute action
         });
 
     }])
@@ -104,7 +160,7 @@ angular.module('starter.controllers', [])
                 if($scope.timer == 0) {
                     $state.go('play');
                 }
-            }
+            };
             var mytimeout = $timeout($scope.onTimeout,1000);
             $scope.stop = function(){
                 $timeout.cancel(mytimeout);
@@ -113,40 +169,13 @@ angular.module('starter.controllers', [])
 
     }])
 
-    .controller('PlayCtrl1', function($scope){
-        getNewNumber();
-        $scope.userNumber;
-        $scope.score = 0;
-        $scope.getFocus = true;
-        $scope.resultMessage = 'Start';
-
-        $scope.calculate = function () {
-            var answer = this.number * this.number;
-            if (answer == this.userNumber) {
-                this.score++;
-                this.resultMessage = 'You got it!'
-                $scope.success = "success";
-            } else {
-                this.resultMessage = "It is " + answer;
-                $scope.success = "failure";
-            }
-            getNewNumber();
-            this.userNumber = '';
-            this.getFocus = true;
-        };
-
-        function getNewNumber() {
-            $scope.number = Math.floor((Math.random() * 9));
-        };
-    })
-
     .controller('LoginCtrl', ['$scope', 'LoginService', '$ionicPopup', '$state', 'socket', function ($scope, LoginService, $ionicPopup, $state, socket) {
         if(localStorage.getItem("username") != ""){
-            LoginService.loginUser(localStorage.getItem("username"), localStorage.getItem("password")).success(function (data) {
+            LoginService.loginUser(localStorage.getItem("username"), localStorage.getItem("password")).success(function () {
                 socket.emit('successlogin', {  username:localStorage.getItem("username")});
                 $state.go('tab.dash');
-            }).error(function (data) {
-                var alertPopup = $ionicPopup.alert({
+            }).error(function () {
+                $ionicPopup.alert({
                     title: 'Login failed!',
                     template: 'Please check your credentials!'
                 });
@@ -158,7 +187,7 @@ angular.module('starter.controllers', [])
 
         $scope.login = function () {
             $scope.template = '';
-            LoginService.loginUser($scope.data.username, $scope.data.password).success(function (data) {
+            LoginService.loginUser($scope.data.username, $scope.data.password).success(function () {
                 localStorage.setItem("username", $scope.data.username);
                 localStorage.setItem("password", $scope.data.password);
                 socket.emit('successlogin', {  username:localStorage.getItem("username")});
@@ -170,7 +199,7 @@ angular.module('starter.controllers', [])
                 else if(data == '1'){
                     $scope.template = 'Username atau password salah';
                 }
-                var alertPopup = $ionicPopup.alert({
+                $ionicPopup.alert({
                     title: 'Login failed!',
                     template: $scope.template
                 });

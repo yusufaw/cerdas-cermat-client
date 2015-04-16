@@ -18,7 +18,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             var hour = minute * 60;
             var day = hour * 24;
             var year =  day * 365;
-            var month = day * 30;
+            //var month = day * 30;
 
             var unit = day;
             var unitStr = 'd';
@@ -145,9 +145,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                 templateUrl: 'templates/profile.html',
                 controller: 'ProfileCtrl'
             })
+            .state('babak-3', {
+                url: '/babak-3',
+                templateUrl: 'templates/babak-3.html',
+                controller: 'PlayCtrl'
+            })
+            .state('babak-2', {
+                url:'/babak-2',
+                templateUrl: 'templates/babak-2.html',
+                controller: 'PlayCtrl'
+            })
         ;
 
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/login');
-
     });

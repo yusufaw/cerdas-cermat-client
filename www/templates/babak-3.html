@@ -1,0 +1,58 @@
+<ion-view>
+    <ion-content ng-init="loadImages()">
+        <div style="height: 20%" class="card">
+            <div class="row" id="play-head">
+                <div class="col">
+                    <div id="box-image-play">
+                        <div class="row">
+
+                            <img id="image-play" src="http://placehold.it/50x50">
+                            <h4 id="play-skor">0</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div id="box-image-play">
+                        <div class="row">
+                            <h4 id="play-skor">0</h4>
+                            <img id="image-play" src="http://placehold.it/50x50">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card"style="height: 80%">
+        <div class="row" ng-repeat="image in images" ng-if="$index % 4 === 0">
+            <div ng-click="openModal()" class="col col-25" ng-if="$index < images.length">
+                <img ng-src="{{images[$index].src}}" width="100%" />
+            </div>
+            <div class="col col-25" ng-if="$index + 1 < images.length">
+                <img ng-src="{{images[$index + 1].src}}" width="100%" />
+            </div>
+            <div class="col col-25" ng-if="$index + 2 < images.length">
+                <img ng-src="{{images[$index + 2].src}}" width="100%" />
+            </div>
+            <div class="col col-25" ng-if="$index + 3 < images.length">
+                <img ng-src="{{images[$index + 3].src}}" width="100%" />
+            </div>
+        </div>
+        </div>
+    </ion-content>
+
+    <ion-footer-bar class="bar-stable">
+
+    </ion-footer-bar>
+</ion-view>
+
+<script id="my-modal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-header-bar>
+            <h1 class="title">My Modal title</h1>
+            <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
+        </ion-header-bar>
+        <ion-content>
+            Hello!
+        </ion-content>
+    </ion-modal-view>
+</script>
