@@ -49,7 +49,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                //cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
             }
             if (window.StatusBar) {
                 // org.apache.cordova.statusbar required
@@ -85,6 +85,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
             .state('tab.dash', {
                 url: '/dash',
+                cache: false,
                 views: {
                     'tab-dash': {
                         templateUrl: 'templates/tab-dash.html',
@@ -122,6 +123,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                 }
             }).state('login', {
                 url: '/login',
+                cache: false,
                 templateUrl: 'templates/login.html',
                 controller: 'LoginCtrl'
             })
@@ -130,33 +132,54 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                 templateUrl: 'templates/category.html',
                 controller: 'CategoryCtrl'
             })
-            .state('play', {
-                url: '/play',
-                templateUrl: 'templates/play.html',
-                controller: 'PlayCtrl'
+            .state('got-opp', {
+                url: '/got-opp',
+                templateUrl: 'templates/got-opponent.html',
+                controller: 'GotOppCtrl'
             })
-            .state('wait', {
-                url: '/waiting',
-                templateUrl: 'templates/waiting.html',
-                controller: 'WaitCtrl'
+            .state('pre-babak-1', {
+                url: '/pre-babak-1',
+                cache: false,
+                templateUrl: 'templates/pre-babak-1.html',
+                controller: 'PreBabak1Ctrl'
             })
             .state('profile', {
                 url: '/profile',
                 templateUrl: 'templates/profile.html',
                 controller: 'ProfileCtrl'
             })
-            .state('babak-3', {
-                url: '/babak-3',
-                templateUrl: 'templates/babak-3.html',
-                controller: 'PlayCtrl'
+            .state('babak-1', {
+                url: '/babak-1',
+                cache: false,
+                templateUrl: 'templates/babak-1.html',
+                controller: 'PlayBabak1Ctrl'
             })
             .state('babak-2', {
                 url:'/babak-2',
+                cache: false,
                 templateUrl: 'templates/babak-2.html',
-                controller: 'PlayCtrl'
+                controller: 'PlayBabak2Ctrl'
+            })
+            .state('babak-3', {
+                url: '/babak-3',
+                cache: false,
+                templateUrl: 'templates/babak-3.html',
+                controller: 'PlayBabak3Ctrl'
             })
         ;
 
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/login');
+    })
+    .directive('focusMe', function ($timeout) {
+        return {
+            link: function (scope, element, attrs) {
+                $timeout(function () {
+                    element[0].focus();
+                    //if(ionic.platform.isAndroid()){
+                    //    cordova.plugins.Keyboard.show();
+                    //}
+                }, 150);
+            }
+        };
     });

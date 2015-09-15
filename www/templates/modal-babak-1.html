@@ -1,0 +1,41 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Hasil Babak 1</h1>
+
+        <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
+    </ion-header-bar>
+    <ion-content>
+        <div class="card">
+            <div class="item">
+                <div class="row">
+                    <div class="col">
+                        <div id="ready-info">
+                            <img id="ready-image" src="http://localhost:3000/images/images1.jpg">
+                            <h3 id="profile-name">{{username}}</h3>
+                            {{poin_ku}}
+                        </div>
+                    </div>
+                    <div class="col text-center"><b>Vs</b></div>
+                    <div class="col">
+                        <div id="ready-info">
+                            <img id="ready-image" src="http://localhost:3000/images/images1.jpg">
+                            <h3 id="profile-name">{{nama_musuh}}</h3>
+                            {{poin_musuh}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item  item-text-wrap">
+                <div id="ready-info">
+                    <h1>Babak 2</h1>
+                    permainan akan dimulai dalam
+                    <h1>{{waktuKeBabak2}}</h1>
+                    detik
+                    <div class="numberDisplay">
+                        <h3>Pada babak ini pemain memilih soal yang untuk dijawab oleh lawan</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

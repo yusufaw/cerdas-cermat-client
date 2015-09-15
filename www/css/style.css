@@ -1,33 +1,33 @@
 /* Empty. Add your own CSS if you like */
 .numberDisplay > h1 {
-  font-size: 48px;
-  text-align: center;
+    font-size: 48px;
+    text-align: center;
 }
 
-.numberDisplay{
-  padding: 12px;
+.numberDisplay {
+    padding: 12px;
 }
 
-.scoreDisplay{
-  text-align: right;
-  padding-right: 12px;
+.scoreDisplay {
+    text-align: right;
+    padding-right: 12px;
 }
 
-.success{
-  color: #00CC00;
+.success {
+    color: #00CC00;
 }
 
-.failure{
-  color: #F80000;
+.failure {
+    color: #F80000;
 }
 
-.resultDisplay{
-  height: 60px;
+.resultDisplay {
+    height: 60px;
 }
 
 .resultDisplay > h1 {
-  font-size: 48px;
-  text-align: center;
+    font-size: 48px;
+    text-align: center;
 }
 
 #profile-bg {
@@ -37,7 +37,7 @@
     width: 100%;
     height: 150px;
 
-         background: url('http://localhost:3000/images/images1.jpg') no-repeat transparent;
+    background: url('http://localhost:3000/images/images1.jpg') no-repeat transparent;
     background-size: 100%;
     background-position: 50% 20%;
 
@@ -48,7 +48,7 @@
     position: relative;
     margin-top: 150px;
     background-color: white;
-    box-shadow: 0px -1px 10px rgba(0,0,0,0.4);
+    box-shadow: 0px -1px 10px rgba(0, 0, 0, 0.4);
     padding-top: 200px;
 }
 
@@ -59,15 +59,18 @@
     z-index: 2;
     text-align: center;
 }
+
 #profile-name {
     color: #444;
     font-size: 26px;
 }
-#profile-description {
+
+.profile-description {
     font-size: 15px;
     color: #888;
 }
-#profile-description a {
+
+.profile-description a {
     color: #888;
 }
 
@@ -78,9 +81,10 @@
     width: 128px;
     height: 128px;
     margin: 30px auto 0;
-    box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.7);
 }
-#nyawa-image {
+
+.nyawa-image {
     width: 32px;
     height: 32px;
     margin: 30px auto 0;
@@ -113,6 +117,7 @@
     height: 48px;
     margin-right: 10px;
 }
+
 .post-options {
     position: absolute;
     font-size: 16px;
@@ -120,6 +125,7 @@
     bottom: 5px;
     color: #888;
 }
+
 #ready-image {
     display: block;
     border-radius: 100px;
@@ -127,11 +133,13 @@
     width: 64px;
     height: 64px;
     margin: 30px auto 0;
-    box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.7);
 }
+
 #ready-info {
     text-align: center;
 }
+
 #vs {
     padding: 0 0 0 0;
     text-align: center;
@@ -139,42 +147,168 @@
     top: 50%;
     transform: translateY(-50%);
 }
-#image-play {
+
+.image-play {
     display: block;
     border-radius: 100px;
     border: 1px solid #fff;
     width: 64px;
     height: 64px;
     margin: 3px auto 0;
-    box-shadow: 0px 0px 4px rgba(0,0,0,0.7);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.7);
 }
-#box-image-play {
+
+.box-image-play {
     text-align: center;
+    background-color: #cb493d;
 }
-#box-col{
+
+.imageOne {
+    text-align: center;
+    background-color: #2824ff;
+}
+
+.imageTwo {
+    text-align: center;
+    background-color: #b5060e;
+}
+
+#box-col {
     border: 1px solid #444;
     border-radius: 0px;
 }
-#play-skor {
-    color: #444;
-    font-size: 20px;
+
+.play-skor {
+    color: #fefefe;
+    font-size: x-large;
+    font-family: fantasy;
 }
-#play-head {
-    background-color: #1aacc3;
+
+.play-head {
+    /*background-color: #1aacc3;*/
+    background-color: #cccccc;
 }
-#card-soal{
+
+#card-soal {
     position: relative;
     height: 100%;
 }
 
-#container-1{
-    height:100%;
-    border-collapse:collapse;
-    display : table
+#container-1 {
+    height: 100%;
+    border-collapse: collapse;
+    display: table
 }
 
-#copyright{
-    display : table-row;
-    vertical-align : bottom;
-    height : 1px;
+#copyright {
+    display: table-row;
+    vertical-align: bottom;
+    height: 1px;
+}
+
+.scale-in {
+    -webkit-transform: scale(0.0);
+    transform: scale(0.0);
+    opacity: 0;
+}
+
+.scale-in.ng-enter,
+.scale-in > .ng-enter {
+    -webkit-transition: all cubic-bezier(.1, .7, .1, 1) 400ms;
+    transition: all cubic-bezier(.1, .7, .1, 1) 400ms;
+}
+
+.scale-in.ng-enter-active,
+.scale-in > .ng-enter-active {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+}
+
+.scale-in.ng-leave,
+.scale-in > .ng-leave {
+    -webkit-transition: all ease-in-out 250ms;
+    transition: all ease-in-out 250ms;
+}
+
+.slider {
+    height: 100%;
+}
+
+.slider-slide {
+    color: #000;
+    background-color: #fff;
+    text-align: center;
+
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-weight: 300;
+}
+
+.grid-babak3 {
+    position: relative;
+    width: 100%;
+    height: 50%;
+}
+
+.text-grid {
+    position: inherit;
+    padding: 25%;
+    text-align: center;
+    background-color: transparent;
+    font-weight: bold;
+}
+.text-jawaban{
+    position: inherit;
+    padding: 10%;
+    text-align: center;
+    background-color: transparent;
+    font-weight: bold;
+}
+.sel {
+    border: groove;
+    border-color: #006600;
+    height: 50%;
+    width: 100%;
+}
+.jawaban {
+    border: groove;
+    border-color: #006600;
+    height: 10%;
+    width: 100%;
+}
+.chosen {
+    background-color: #fff957;
+    height: 50%;
+    width: 100%;
+}
+.player1 {
+    background-color: #2824ff;
+    height: 50%;
+    width: 100%;
+}
+.player2 {
+    background-color: #b5060e;
+    height: 50%;
+    width: 100%;
+}
+
+.player1 p{
+    color: #fefefe;
+}
+
+.player2 p{
+    color: #fefefe;
+}
+.time-top {
+    width: 15%;
+    background-color: #cbbf5f;
+}
+
+.huruf-waktu {
+    color: #006600;
+    font-size: xx-large;
+}
+.sekerol {
+    height: 70%;
+    width: 100%;
 }

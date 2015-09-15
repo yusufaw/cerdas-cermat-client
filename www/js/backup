@@ -1,0 +1,877 @@
+.controller('PlayBabak1Ctrl', ['$scope', 'socket', '$timeout', '$ionicModal', '$interval', '$state', '$rootScope','$ionicHistory', function ($scope, socket, $timeout, $ionicModal, $interval, $state, $rootScope, $ionicHistory) {
+    socket.emit('ready babak 1', 'ok');
+    $scope.isShift = false;
+    $scope.opponentAct = '';
+    $scope.userAnswer = '';
+    $scope.ownPoin = 0;
+    $scope.opponentPoin = 0;
+    $scope.username = localStorage.getItem('username');
+    $scope.nama_musuh = $rootScope.detail_musuh['username'];
+    var tipeUser = '';
+    var stop;
+
+    socket.on('ready other babak 1', function () {
+        socket.emit('all ready babak 1', 'ok');
+    });
+    $scope.fight = function (data) {
+        if (angular.isDefined(stop)) return;
+        stop = $interval(function () {
+            if ($scope.waktu > 0) {
+                $scope.waktu = $scope.waktu - 1;
+            } else {
+                if ($scope.isShift) {
+                    $scope.isShift = false;
+                    var data_jawaban = {
+                        'username': data.user,
+                        'time': $scope.waktu,
+                        'answer': "",
+                        'tipe': data.tipe
+                    };
+                    socket.emit('answer babak 1', data_jawaban);
+                }
+                $scope.stopFight();
+            }
+        }, 1000);
+    };
+
+    $scope.stopFight = function () {
+        if (angular.isDefined(stop)) {
+            $interval.cancel(stop);
+            stop = undefined;
+        }
+    };
+    $scope.resetFight = function () {
+        $scope.waktu = 20;
+    };
+
+    $scope.$on('$destroy', function () {
+        // Make sure that the interval is destroyed too
+        $scope.stopFight();
+    });
+    socket.on('soal babak 1', function (data) {
+        $scope.resetFight();
+        $scope.opponentAct = "";
+        if (data.user == localStorage.getItem('username')) {
+            tipeUser = data.tipe;
+            $scope.isShift = true;
+            $scope.textShift = "Giliran Anda, silahkan jawab";
+        }
+        else {
+            $scope.isShift = false;
+            $scope.textShift = "Giliran " + data.user + "";
+        }
+        $scope.fight(data);
+        $scope.soal = data.soal.pertanyaan;
+    });
+
+    $scope.jawab = function (userAnswer) {
+        var data_jawaban = {
+            'username': localStorage.getItem("username"),
+            'time': $scope.waktu,
+            'answer': userAnswer,
+            'tipe': tipeUser
+        };
+        $scope.isShift = false;
+        socket.emit('answer babak 1', data_jawaban);
+        $scope.userAnswer = '';
+        $scope.stopFight();
+    };
+
+    socket.on('other answer babak 1', function (data) {
+        console.log('menerima jawaban dari ' + data.username + ' ===== send to server');
+        socket.emit('answer babak 1', data);
+        $scope.stopFight();
+    });
+
+    socket.on('result answered babak 1', function (data) {
+        console.log(data);
+        $scope.opponentAct = data.username + ' menjawab ' + data.answer;
+        if (data.username == localStorage.getItem('username')) {
+            $scope.ownPoin = data.poin;
+        }
+        else {
+            $scope.opponentPoin = data.poin;
+        }
+        if (data.isbenar == '1') {
+            $scope.opponentAct = $scope.opponentAct + '. Benar!';
+        }
+        else {
+            $scope.opponentAct = $scope.opponentAct + '. Salah!';
+        }
+    });
+
+    $scope.isTyping = function (userAnswer) {
+        if (userAnswer.length > 1) {
+            socket.emit('typing', localStorage.getItem('username'));
+        }
+        else {
+            socket.emit('stop typing', localStorage.getItem('username'));
+        }
+    };
+
+    socket.on('typing', function (data) {
+        console.log(data);
+        $scope.opponentAct = data + ' sedang mengetik';
+    });
+
+    socket.on('stop typing', function () {
+        $scope.opponentAct = "";
+    });
+
+    socket.on('timeout', function (data) {
+        $scope.opponentAct = 'waktu habis! ' + data + ' tidak menjawab';
+    });
+
+    socket.on('babak 1 done', function (data) {
+        localStorage.setItem('poin babak 1', JSON.stringify(data));
+        if (data[0].username == localStorage.getItem('username')) {
+            $scope.poin_ku = data[0].poin;
+            $scope.poin_musuh = data[1].poin;
+        }
+        else {
+            $scope.poin_ku = data[1].poin;
+            $scope.poin_musuh = data[0].poin;
+        }
+        $scope.waktuKeBabak2 = 10;
+        $scope.onTimeout = function () {
+            $scope.waktuKeBabak2--;
+            waktuKeBabak2Ku = $timeout($scope.onTimeout, 1000);
+            if ($scope.waktuKeBabak2 == 0) {
+                $state.go('babak-2');
+                $scope.closeModalBabal1();
+            }
+        };
+        var waktuKeBabak2Ku = $timeout($scope.onTimeout, 1000);
+        $scope.openModalBabak1();
+    });
+
+    $ionicModal.fromTemplateUrl('templates/hasil-babak-1.html', {
+        scope: $scope,
+        animation: 'scale-in'
+    }).then(function (modal) {
+        $scope.modalBabak1 = modal;
+    });
+
+    $scope.openModalBabak1 = function () {
+        $scope.modalBabak1.show();
+    };
+
+    $scope.closeModalBabal1 = function () {
+        $scope.modalBabak1.hide();
+    };
+
+    $scope.$on('$destroy', function () {
+        $scope.modalBabak1.remove();
+    });
+}])
+    .controller('PlayBabak2Ctrl', ['$scope', 'socket', '$timeout', '$ionicModal', '$interval', '$state', '$rootScope','$ionicHistory', function ($scope, socket, $timeout, $ionicModal, $interval, $state, $rootScope, $ionicHistory) {
+        var _idSoal = '';
+        var tipeGilir = '';
+        $scope.username = localStorage.getItem('username');
+        $scope.nama_musuh = $rootScope.detail_musuh['username'];
+
+        socket.emit('ready babak 2', 'ok');
+        socket.on('ready other babak 2', function () {
+            console.log(localStorage.getItem('username') + ' menerima ready other >> mengirim ready all ke serve');
+            socket.emit('all ready babak 2', 'ok');
+        });
+        $scope.isShift = false;
+        $scope.header = true;
+        socket.on('pilihan soal', function (data) {
+            var ele = document.getElementsByClassName("inputPilihan");
+            console.log(ele.length);
+            for (var i = 0; i < ele.length; i++) {
+                ele[i].checked = false;
+                console.log(ele[i].checked);
+            }
+
+            $scope.answer = false;
+
+            console.log(data);
+            tipeGilir = data.tipe;
+            $scope.resetFight();
+            $scope.fight();
+            $scope.opponentAct = "";
+            $scope.pilihan_soal = [];
+            if (data.user == localStorage.getItem('username')) {
+                for (var i = 0; i < data.soal.length; i++) {
+                    $scope.pilihan_soal[i] = {
+                        id: i, _id: data.soal[i]._id, question: data.soal[i].question, answer: data.soal[i].answer
+                    };
+                }
+                $scope.textShift = 'Silahkan pilih pertanyaan untuk lawan Anda';
+                $scope.isShift = true;
+            }
+            else {
+                $scope.textShift = 'Menunggu pertanyaan dari ' + data.user;
+                $scope.isShift = false;
+            }
+            $scope.showSoalShift = false;
+            $scope.showSoal = false;
+        });
+
+        $scope.doPilih = function (pilihan) {
+            socket.emit('pertanyaan pilihan', pilihan);
+            console.log(pilihan);
+            $scope.textShift = 'Mengirim pertanyaan';
+            $scope.header = true;
+        };
+
+        socket.on('jawaben rek', function (data) {
+            console.log(data);
+            $scope.resetAnswering();
+            $scope.answering();
+            if (data.user == localStorage.getItem('username')) {
+                $scope.answerShift = true;
+                $scope.textShift = 'Giliran Anda, silahkan jawab';
+                $scope.isShift = false;
+                $scope.showSoalShift = true;
+            }
+            else {
+                $scope.showSoal = true;
+                $scope.answerShift = false;
+                $scope.textShift = 'Giliran ' + data.user;
+                $scope.isShift = false;
+            }
+            $scope.soalBabak2 = data.soal.pertanyaan;
+            _idSoal = data.soal.id;
+        });
+
+        $scope.isTyping = function (userAnswer) {
+            if (userAnswer.length > 1) {
+                socket.emit('typing', localStorage.getItem('username'));
+            }
+            else {
+                socket.emit('stop typing', localStorage.getItem('username'));
+            }
+        };
+
+        socket.on('typing', function (data) {
+            console.log(data);
+            $scope.opponentAct = data + ' sedang mengetik';
+        });
+
+        socket.on('stop typing', function () {
+            $scope.opponentAct = "";
+        });
+
+        $scope.jawab = function (userAnswer) {
+            var data_jawaban = {
+                'username': localStorage.getItem("username"),
+                'time': 0,
+                '_id': _idSoal,
+                'answer': userAnswer,
+                'tipe': tipeGilir
+            };
+            socket.emit('answer babak 2', data_jawaban);
+            $scope.userAnswer = false;
+
+        };
+
+        socket.on('other answer babak 2', function (data) {
+            console.log(data);
+            socket.emit('answer babak 2', data);
+        });
+
+        socket.on('result answered babak 2', function (data) {
+            $scope.answerShift = false;
+            $scope.showSoalShift = false;
+            $scope.showSoal = true;
+            console.log(data);
+
+            if (data.username == localStorage.getItem('username')) {
+                $scope.ownPoin = data.poin;
+                $scope.opponentAct = 'Anda menjawab ' + data.answer;
+            }
+            else {
+                $scope.opponentPoin = data.poin;
+                $scope.opponentAct = data.username + ' menjawab ' + data.answer;
+            }
+            if (data.isbenar == '1') {
+                $scope.opponentAct = $scope.opponentAct + '. Benar!';
+            }
+            else {
+                $scope.opponentAct = $scope.opponentAct + '. Salah!';
+            }
+            $scope.stopAnswering();
+        });
+
+        var stop;
+
+        $scope.fight = function () {
+            if (angular.isDefined(stop)) return;
+
+            stop = $interval(function () {
+                if ($scope.waktu2 > 0) {
+                    $scope.waktu2 = $scope.waktu2 - 1;console.log('fight urip');
+                }
+                else {
+                    $scope.stopFight();
+                    if ($scope.isShift) {
+                        var data_jawaban = {
+                            'username': localStorage.getItem("username"),
+                            'time': 0,
+                            '_id': _idSoal,
+                            'answer': 'bonus',
+                            'tipe': tipeGilir
+                        };
+
+                        socket.emit('answer babak 2', data_jawaban);
+                        $scope.userAnswer = false;
+                    }
+                }
+            }, 1000);
+        };
+
+        $scope.resetFight = function () {
+            $scope.waktu2 = 10;
+            $scope.stopAnswering();
+        };
+
+        $scope.stopFight = function () {
+            if (angular.isDefined(stop)) {
+                $interval.cancel(stop);
+                stop = undefined;
+            }
+        };
+
+        var mandek;
+        $scope.answering = function () {
+            if (angular.isDefined(mandek)) return;
+            mandek = $interval(function () {
+                if ($scope.waktu2 > 0) {
+                    $scope.waktu2 = $scope.waktu2 - 1;console.log('answering urip');
+                }
+                else {
+                    $scope.jawab("");
+                }
+            }, 1000);
+        };
+
+        $scope.resetAnswering = function () {
+            $scope.stopFight();
+            $scope.waktu2 = 15;
+        };
+
+        $scope.stopAnswering = function(){
+            if (angular.isDefined(mandek)) {
+                $interval.cancel(mandek);
+                mandek = undefined;
+            }
+        };
+
+        socket.on('babak 2 done', function (data) {
+            localStorage.setItem('poin babak 2', JSON.stringify(data));
+            var pBabak1 = JSON.parse(localStorage.getItem('poin babak 1'));
+            console.log(pBabak1);
+            if (pBabak1[0].username == localStorage.getItem('username')) {
+                $scope.poin_ku_1 = pBabak1[0].poin;
+                $scope.poin_musuh_1 = pBabak1[1].poin;
+            }
+            else {
+                $scope.poin_ku_1 = pBabak1[1].poin;
+                $scope.poin_musuh_1 = pBabak1[0].poin;
+            }
+
+            if (data[0].username == localStorage.getItem('username')) {
+                $scope.poin_ku = data[0].poin;
+                $scope.poin_musuh = data[1].poin;
+            }
+            else {
+                $scope.poin_ku = data[1].poin;
+                $scope.poin_musuh = data[0].poin;
+            }
+            $scope.waktuKeBabak3 = 10;
+            $scope.onTimeout = function () {
+                $scope.waktuKeBabak3--;
+                waktuKeBabak3Ku = $timeout($scope.onTimeout, 1000);
+                if ($scope.waktuKeBabak3 == 0) {
+                    $state.go('babak-3');
+                    $scope.closeModalBabak2();
+                }
+            };
+            var waktuKeBabak3Ku = $timeout($scope.onTimeout, 1000);
+            $scope.openModalBabak2();
+        });
+
+        socket.on('logout', function () {
+            $state.go('login');
+        });
+
+        socket.on('poin babak 2', function (data) {
+            if (data[0].username == localStorage.getItem('username')) {
+                $scope.ownPoin = data[0].poin;
+                $scope.opponentPoin = data[1].poin;
+            }
+            else {
+                $scope.ownPoin = data[1].poin;
+                $scope.opponentPoin = data[0].poin;
+            }
+        });
+
+        $ionicModal.fromTemplateUrl('templates/hasil-babak-2.html', {
+            scope: $scope,
+            animation: 'scale-in'
+        }).then(function (modal) {
+            $scope.modalBabak2 = modal;
+        });
+
+        $scope.openModalBabak2 = function () {
+            $scope.modalBabak2.show();
+        };
+
+        $scope.closeModalBabak2 = function () {
+            $scope.modalBabak2.hide();
+        };
+
+    }])
+    .controller('PlayBabak3Ctrl', ['$scope', 'socket', '$timeout', '$ionicModal', '$interval', '$state', '$rootScope','$ionicHistory', function ($scope, socket, $timeout, $ionicModal, $interval, $state, $rootScope, $ionicHistory) {
+        socket.emit('ready babak 3', 'ok');
+        $scope.nama_musuh = $rootScope.detail_musuh['username'];
+        $scope.username = localStorage.getItem('username');
+        $scope.terpilih = [];
+        $scope.actText = false;
+        socket.on('ready other babak 3', function () {
+            console.log(localStorage.getItem('username') + ' menerima ready other >> mengirim ready all ke serve')
+            socket.emit('all ready babak 3', 'ok');
+        });
+        $scope.images = [];
+        var noSoal = 0;
+
+        socket.on('grid soal', function (data) {
+            for (var i = 0; i < 16; i++) {
+                $scope.images.push({
+                    id: i,
+                    soal: data.soal[i].question,
+                    normal: true,
+                    terpilih: false,
+                    isOne: false,
+                    isTwo: false
+                });
+            }
+
+            $scope.resetFight();
+            $scope.fight();
+            //console.log($scope.images[0]);
+            if (data.user == localStorage.getItem('username')) {
+                $scope.textGilir = 'Giliran Anda, Silahkan pilih pertanyaan';
+                $scope.isShift = true;
+            }
+            else{
+                $scope.textGilir = 'Giliran '+data.user;
+                $scope.isShift = false;
+            }
+        });
+
+        socket.on('poin babak 3', function (data) {
+            if (data[0].username == $scope.username) {
+                $scope.ownPoin = data[0].poin;
+                $scope.opponentPoin = data[1].poin;
+            }
+            else {
+                $scope.ownPoin = data[1].poin;
+                $scope.opponentPoin = data[0].poin;
+            }
+        });
+
+        socket.on('buka musuh', function (ok) {
+            $scope.images[ok].normal = false;
+            $scope.images[ok].terpilih = true;
+            noSoal = ok;
+            $scope.actText = false;
+            $scope.stopFight();
+            $scope.resetAnswering();
+            setTimeout( function() {
+                $scope.answering();
+                $scope.soal = $scope.images[ok].soal;
+                $scope.modal.show();
+            }, 1000);
+        });
+
+        $scope.jawab = function (userAnswer) {
+            var data_jawaban = {
+                'username': $scope.username,
+                'time': 10,
+                'answer': userAnswer,
+                'tipe': 'X',
+                'no': noSoal
+            };
+            //$scope.isShift = false;
+            socket.emit('answer babak 3', data_jawaban);
+            $scope.userAnswer = '';
+            $scope.stopAnswering();
+        };
+
+        socket.on('other answer babak 3', function (data) {
+            console.log('menerima jawaban dari ' + data.username + ' ===== send to server');
+            socket.emit('answer babak 3', data);
+            //$scope.stopFight();
+        });
+
+        socket.on('result answered babak 3', function (data) {
+            console.log(data);
+            $scope.stopAnswering();
+
+            $scope.opponentAct = data.username + ' menjawab ' + data.answer;
+            if (data.isbenar == '1') {
+                $scope.opponentAct = $scope.opponentAct + '. Benar!';
+            }
+            else {
+                $scope.opponentAct = $scope.opponentAct + '. Salah!';
+                $scope.images[data.no].normal = true;
+            }
+
+            $scope.actText = true;
+
+            $scope.opponentAct = $scope.opponentAct.replace(localStorage.getItem('username'), 'Anda');
+
+            if (data.username == $scope.username) {
+                if(data.isbenar == '1'){
+                    $scope.images[data.no].isOne = true;
+                    $scope.images[data.no].isTwo = false;
+                    $scope.images[data.no].terpilih = false;
+                    $scope.images[data.no].normal = false;
+                }
+                $scope.ownPoin = data.poin;
+            }
+            else {
+                if(data.isbenar == '1'){
+                    $scope.images[data.no].isTwo = true;
+                    $scope.images[data.no].isOne = false;
+                    $scope.images[data.no].terpilih = false;
+                    $scope.images[data.no].normal = false;
+                }
+                $scope.opponentPoin = data.poin;
+            }
+
+
+        });
+
+        socket.on('babak 3 lanjut', function () {
+            console.log('babak 3 lanjut');
+            $scope.closeModal();
+        });
+
+        $scope.isTyping = function (userAnswer) {
+            if (userAnswer.length > 0) {
+                socket.emit('typing', localStorage.getItem('username'));
+            }
+            else {
+                socket.emit('stop typing', localStorage.getItem('username'));
+            }
+        };
+
+        socket.on('typing', function (data) {
+            console.log(data);
+            $scope.actText = true;
+            $scope.opponentAct = data + ' sedang mengetik';
+        });
+
+        socket.on('stop typing', function () {
+            $scope.actText = false;
+            $scope.opponentAct = "";
+        });
+
+        socket.on('noFight', function (data) {
+            $scope.stopFight();
+            $scope.textGilir = 'Waktu habis! ' + (data.replace(localStorage.getItem('username'), 'Anda')) + ' tidak memilih';
+            //setTimeout(function () {
+            //    $scope.closeModal();
+            //}, 2000);
+        });
+
+        socket.on('noAnswer', function (data) {
+            $scope.textGilir = 'Waktu habis! ' + (data.replace(localStorage.getItem('username'), 'Anda')) + ' tidak menjawab';
+            //setTimeout(function () {
+            //    $scope.closeModal();
+            //}, 9000);
+        });
+
+        socket.on('babak 3 done', function (data) {
+            $scope.stopFight();
+            console.log('selesai');
+            localStorage.setItem('poin babak 3', JSON.stringify(data));
+            var pBabak1 = JSON.parse(localStorage.getItem('poin babak 1'));
+            var pBabak2 = JSON.parse(localStorage.getItem('poin babak 2'));
+            //console.log(pBabak1);
+            //$scope.poin_ku_1 = (pBabak1[0].username == localStorage.getItem('username') ? pBabak1[0].poin: pBabak1[1].poin);
+            //$scope.poin_musuh_1 = (pBabak1[0].username != localStorage.getItem('username') ? pBabak1[1].poin: pBabak1[0].poin);
+            //$scope.poin_ku_2 = (pBabak2[0].username == localStorage.getItem('username') ? pBabak2[0].poin: pBabak2[1].poin);
+            //$scope.poin_musuh_2 = (pBabak2[0].username != localStorage.getItem('username') ? pBabak2[1].poin: pBabak2[0].poin);
+            $scope.poin_ku = (data[0].username == localStorage.getItem('username') ? data[0].poin: data[1].poin);
+            $scope.poin_musuh = (data[0].username != localStorage.getItem('username') ? data[1].poin: data[0].poin);
+
+            socket.emit('game done', 'ok');
+            $scope.waktuKeHome = 10;
+            $scope.onTimeout = function () {
+                $scope.waktuKeHome--;
+                waktuKeHomeKu = $timeout($scope.onTimeout, 1000);
+                if ($scope.waktuKeHome == 0) {
+                    //$scope.$emit('todo:setTimer');
+                    //$ionicHistory.nextViewOptions({
+                    //    disableBack: true
+                    //});
+                    //$state.go('tab.dash');
+                    $scope.closeModalBabak3();
+
+
+                }
+            };
+            var waktuKeHomeKu = $timeout($scope.onTimeout, 1000);
+            $scope.openModalBabak3();
+        });
+
+        $ionicModal.fromTemplateUrl('templates/hasil-babak-3.html', {
+            scope: $scope,
+            animation: 'scale-in'
+        }).then(function (modal) {
+            $scope.modalBabak3 = modal;
+        });
+
+        $scope.openModalBabak3 = function () {
+            $scope.modal.hide();
+
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+            $scope.modalBabak3.show();
+        };
+
+        $scope.closeModalBabak3 = function () {
+            $scope.modalBabak3.hide();
+            $ionicHistory.goBack();
+        };
+
+        function playTimer(detikan){
+            move(detikan)
+                .ease('snap')
+                .set('opacity', 1)
+                .scale(2)
+                .duration('0s')
+                .end();
+            move(detikan)
+                .ease('out')
+                //.rotate(140)
+                .scale(0.1)
+                .set('opacity', 0)
+                .duration('1s')
+                .end();
+        }
+        var stop;
+
+        $scope.fight = function () {
+            if (angular.isDefined(stop)) return;
+
+            stop = $interval(function () {
+                if ($scope.waktu3 > 0) {
+                    $scope.waktu3 = $scope.waktu3 - 1;
+                    //var dtk = document.getElementsByClassName('huruf-waktu');
+                    playTimer(document.getElementById('playTimer'));
+                    console.log('fight on');
+                }
+                else {
+
+                    if ($scope.isShift) { $scope.stopFight();
+                        $scope.jawab('noFight');
+                        console.log('mengirim jawaban shift = '+$scope.isShift+' waktu = '+$scope.waktu3);
+                    }
+                }
+            }, 1000);
+        };
+
+        $scope.resetFight = function () {
+            $scope.waktu3 = 10;
+            $scope.stopAnswering();
+        };
+
+        $scope.stopFight = function () {
+            if (angular.isDefined(stop)) {
+                $interval.cancel(stop);
+                stop = undefined;
+                console.log('fight off');
+            }
+        };
+
+        var mandek;
+
+        $scope.answering = function () {
+            if (angular.isDefined(mandek)) return;
+            mandek = $interval(function () {
+                if ($scope.waktu_jawab > 0) {
+                    $scope.waktu_jawab = $scope.waktu_jawab - 1;
+                    playTimer(document.getElementById('playTimerQ'));
+                    console.log('answering on');
+                }
+                else {
+                    if ($scope.isShift) {
+                        $scope.stopAnswering();
+                        console.log('jawab? waktu = ' + $scope.waktu_jawab);
+                        $scope.jawab("noAnswer");
+                    }
+                }
+            }, 1000);
+        };
+
+        $scope.resetAnswering = function () {
+            $scope.waktu_jawab = 10;
+        };
+
+        $scope.stopAnswering = function(){
+            if (angular.isDefined(mandek)) {
+                $interval.cancel(mandek);
+                mandek = undefined;
+                console.log('answering off');
+            }
+        };
+
+        $ionicModal.fromTemplateUrl('templates/modal-question-babak-3.html', {
+            scope: $scope,
+            animation: 'scale-in'
+        }).then(function (modal) {
+            $scope.modal = modal;
+        });
+
+        $scope.openQuestion = function (ok) {
+            console.log($scope.isShift);
+            $scope.actText = false;
+            if($scope.isShift){
+                $scope.images[ok].normal = false;
+                $scope.images[ok].terpilih = true;
+                noSoal = ok;
+                socket.emit('open babak 3', ok);
+                $scope.stopFight();
+                $scope.resetAnswering();
+                setTimeout( function(){
+                    $scope.soal = $scope.images[ok].soal;
+                    $scope.modal.show();
+                    $scope.answering();
+                }, 1000);
+            }
+            $scope.userAnswer = !$scope.userAnswer;
+        };
+
+        $scope.closeModal = function () {
+            $scope.images[noSoal].terpilih = false;
+            $scope.modal.hide();
+            console.log('shift before = '+$scope.isShift);
+            $scope.isShift = !$scope.isShift;
+            console.log('shift after = '+$scope.isShift);
+            $scope.resetFight();
+            $scope.fight();
+            $scope.textGilir = ($scope.isShift ? 'Giliran Anda, Silahkan pilih pertanyaan': 'Giliran '+$scope.nama_musuh);
+        };
+
+        $scope.$on('$destroy', function () {
+            //$scope.modal.remove();
+            //$scope.modalBabak3.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hidden', function () {
+            // Execute action
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function () {
+
+        });
+    }])
+    .controller('PreBabak1Ctrl', ['$scope', 'socket', '$timeout', '$state', '$rootScope', '$interval','$ionicHistory', function ($scope, socket, $timeout, $state, $rootScope, $interval, $ionicHistory) {
+        //$scope.loadPreBabak1 = function () {
+        console.log('ready wait on');
+        socket.emit('ready wait', 'ok');
+        //};
+
+        socket.on('ready wait other', function (data) {
+            socket.emit('all ready wait', 'ok');
+            $rootScope.detail_musuh = {
+                'username': data.username,
+                'poin': data.poin
+            };
+            console.log('musuhku adalah '+$rootScope.detail_musuh['username']);
+        });
+        $scope.timer = 10;
+        //socket.emit('ready wait', 'ok');
+
+        socket.on('ready wait all', function (data) {
+            $scope.username = localStorage.getItem("username");
+            localStorage.setItem('poin babak 1', JSON.stringify({}));
+            localStorage.setItem('poin babak 2', JSON.stringify({}));
+            $scope.nama_musuh = data.username;
+            $scope.poin_musuh = data.poin;
+
+            $scope.goToPlay();
+
+
+            //$scope.onTimeout = function () {
+            //    $scope.timer--;
+            //    mytimeout = $timeout($scope.onTimeout, 1000);
+            //    if ($scope.timer == 0) {
+            //        $state.go('babak-3');
+            //    }
+            //};
+            //var mytimeout = $timeout($scope.onTimeout, 1000);
+
+
+
+        });
+
+        $rootScope.$on('todo:setTimer', function() {
+            $scope.updateTimer();
+        });
+
+        $scope.updateTimer  = function () {
+            $scope.timer = 10;
+            stop = "";
+        };
+
+        var stop;
+
+        $scope.goToPlay = function () {
+            if (angular.isDefined(stop)) return;
+
+            var detikan = document.getElementById('myTimer');
+            stop = $interval(function () {
+                if ($scope.timer > 0) {
+                    $scope.timer = $scope.timer - 1;
+
+                    //move(detikan)
+                    //    .scale(3)
+                    //    .duration('1s')
+                    //    .end();
+                    move(detikan)
+                        .ease('snap')
+                        .set('opacity', 1)
+                        .scale(1.6)
+                        .duration('0s')
+                        .end();
+                    move(detikan)
+                        .ease('snap')
+                        //.rotate(140)
+                        .scale(1)
+                        .set('opacity', 0)
+                        .duration('1s')
+                        .end();
+
+                }
+                else {
+                    $scope.stopFight();
+                    //$ionicHistory.nextViewOptions({
+                    //    disableBack: true
+                    //});
+                    //$state.go('babak-3');
+                    socket.emit('game done', 'ok');
+                    socket.emit('wis bar');
+                }
+            }, 1000);
+        };
+
+        $scope.stopFight = function () {
+            if (angular.isDefined(stop)) {
+                $interval.cancel(stop);
+                stop = undefined;
+            }
+        };
+
+        socket.on('wis bar', function () {console.log('go back');
+            $ionicHistory.goBack();
+        });
+    }])

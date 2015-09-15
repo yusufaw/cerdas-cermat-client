@@ -1,63 +1,83 @@
-<ion-view title="Account">
-    <ion-content ng-init="loadImages()">
-        <div style="height: 20%" class="card">
+<ion-view>
+    <ion-content scroll="false">
+        <div style="height: 15%" class="card">
             <div class="row" id="play-head">
                 <div class="col">
-                    <div id="box-image-play">
+                    <div class="box-image-play">
                         <div class="row">
-
-                            <img id="image-play" src="http://placehold.it/50x50">
-                            <h4 id="play-skor">SKOR<br/>0</h4>
+                            <div class="col">
+                                <img class="image-play" src="http://placehold.it/50x50">
+                            </div>
+                            <div class="col">
+                                <h4 class="play-skor">SKOR<br/>{{ownPoin}}</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="col-center">
+                    <h3>{{waktu2}}</h3>
+                </div>
                 <div class="col">
-                    <div id="box-image-play">
+                    <div class="box-image-play">
                         <div class="row">
-                            <h4 id="play-skor">SKOR<br/>0</h4>
-                            <img id="image-play" src="http://placehold.it/50x50">
-
+                            <div class="col">
+                                <h4 class="play-skor">SKOR<br/>{{opponentPoin}}</h4>
+                            </div>
+                            <div class="col">
+                                <img class="image-play" src="http://placehold.it/50x50">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card"style="height: 80%">
-            <div class="list">
+        <div style="height: 10%" class="card">
+            <div class="item item-text-wrap text-center">
+                {{textShift}}
+            </div>
+        </div>
+        <ion-scroll direction="y" style="width: 100%; height: 70%" ng-show="isShift">
+            <div class="card">
 
-                <label class="item item-radio">
-                    <input type="radio" name="group">
-                    <div class="item-content">
-                        Go
+                <ion-radio ng-model="$parent.answer" ng-repeat="pilih in pilihan_soal"
+                           ng-value="'{{pilih.id}}'" class="inputPilihan">
+                    <div class="row">
+                        <div class="col-center col-90 item-text-wrap">{{pilih.question}}</div>
+                        <div class="col-10"></div>
                     </div>
-                    <i class="radio-icon ion-checkmark"></i>
-
-                </label>
-                <label class="item item-radio">
-                    <input type="radio" name="group">
-                    <div class="item-content">
-                        Go
+                </ion-radio>
+                <div class="text-center">
+                    <div class="row-center">
+                        <button class="button button-positive" ng-disabled="!answer" ng-click="doPilih(answer)">
+                            Pilih
+                        </button>
                     </div>
-                    <i class="radio-icon ion-checkmark"></i>
-
-                </label>
+                </div>
+            </div>
+        </ion-scroll>
+        <div style="height: 45%" class="card" ng-show="showSoal">
+            <div class="item item-text-wrap">
+                <p>{{soalBabak2}}</p>
+            </div>
+            <div class="item">
+                {{opponentAct}}
+            </div>
+        </div>
+        <div style="height: 45%" class="card" ng-show="showSoalShift">
+            <div class="item item-text-wrap">
+                <p>{{soalBabak2}}</p>
+            </div>
+        </div>
+        <div style="height: 30%" class="card" ng-show="answerShift">
+            <div class="item">
+                <input class="item-input" ng-keyup="isTyping(userAnswer)" placeholder="Jawab" type="text"
+                       ng-model="userAnswer"/>
+                <button class="button button-full button-positive" ng-click="jawab(userAnswer)">
+                    Jawab
+                </button>
             </div>
         </div>
     </ion-content>
-
     <ion-footer-bar class="bar-stable">
-
     </ion-footer-bar>
 </ion-view>
-
-<script id="my-modal.html" type="text/ng-template">
-    <ion-modal-view>
-        <ion-header-bar>
-            <h1 class="title">My Modal title</h1>
-            <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
-        </ion-header-bar>
-        <ion-content>
-            Hello!
-        </ion-content>
-    </ion-modal-view>
-</script>

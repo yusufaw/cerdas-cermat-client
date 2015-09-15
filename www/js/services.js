@@ -1,5 +1,6 @@
 // var url = 'http://172.21.13.64:3000/';
-var url = 'http://localhost:3000'
+var url = 'http://127.0.0.1:3000';
+//var url = 'http://192.168.1.100:3000';
 angular.module('starter.services', [])
 
 /**

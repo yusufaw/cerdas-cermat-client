@@ -1,0 +1,300 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">{{steps}}</h1>
+        <!--<div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>-->
+    </ion-header-bar>
+    <ion-content ng-show="show[0]">
+        <!--ng-init="loadImages()"-->
+        <div class="card" style="height: 100%">
+            <div class="item item-divider center-block">
+                <div class="row center-block">
+                    <div class="col-75">Babak 1<br/>akan dimulai dalam</div>
+                    <div class="col-25"><h1 id="myTimer">{{timerPrePlay}}</h1></div>
+                </div>
+            </div>
+            <div class="item item-text-wrap" style="height: 70%">
+                Pada babak ini pemain akan bergantian menjawab soal yang diberikan. Tiap soal yang diberikan bernilai 10
+                poin jika Anda menjawab dengan benar. Selamat bertanding.
+            </div>
+            <!--</div>-->
+            <!--<div class="card">-->
+            <div class="item">
+                <div class="row text-center" class="play-head">
+                    <div class="col">
+                        <div class="imageOne">
+                            <div class="row">
+                                <div class="col">
+                                    <img class="image-play" src="profile/profil.jpg">
+
+                                    <h3 class="profile-name">{{detail_ku['username']}}</h3>
+                                    <h4 class="play-skor">SKOR<br/>{{detail_ku['poin']}}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col row-center col-center">Vs</div>
+                    <div class="col">
+                        <div class="imageTwo">
+                            <div class="row">
+                                <div class="col">
+                                    <img class="image-play" src="profile/onoda.jpg">
+
+                                    <h3 class="profile-name">{{detail_musuh['username']}}</h3>
+                                    <h4 class="play-skor">SKOR<br/>{{detail_musuh['poin']}}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+    <ion-content ng-show="show[1]" scroll="false">
+        <div class="card" ng-show="isHeader">
+            <div class="row" class="play-head">
+                <div class="col">
+                    <div class="imageOne">
+                        <div class="row">
+                            <div class="col">
+                                <img class="image-play" src="profile/profil.jpg">
+                            </div>
+                            <div class="col row-center col-center">
+                                <h4 class="play-skor">{{detail_ku['poin']}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-center row-center text-center time-top">
+                    <h3 class="row-center huruf-waktu" id="playTimer">{{waktu1}}</h3>
+                </div>
+                <div class="col">
+                    <div class="imageTwo">
+                        <div class="row">
+                            <div class="col row-center col-center">
+                                <h4 class="play-skor">{{detail_musuh['poin']}}</h4>
+                            </div>
+                            <div class="col">
+                                <img class="image-play" src="profile/onoda.jpg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--</div>-->
+        <!--<div style="height: 10%" class="card">-->
+            <div class="item item-text-wrap text-center">
+                {{textShift}}
+            </div>
+        </div>
+
+        <div ng-show="view[0]">
+            <div style="height: 45%" class="card">
+                <div class="item item-text-wrap">
+                    <p>{{soal}}</p>
+                </div>
+                <div class="item" ng-show="isShift">
+                    <div class="row row-center text-center">
+                        <div ng-click="jawabBabak3('A')" class="col col-50">
+                            <div class="jawaban">
+                                <p class="text-jawaban">{{jawabanA}}</p>
+                            </div>
+                        </div>
+                        <div ng-click="jawabBabak3('B')" class="col col-50">
+                            <div class="jawaban">
+                                <p class="text-jawaban">{{jawabanB}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-center text-center">
+                        <div ng-click="jawabBabak3('C')" class="col col-50">
+                            <div class="jawaban">
+                                <p class="text-jawaban">{{jawabanC}}</p>
+                            </div>
+                        </div>
+                        <div ng-click="jawabBabak3('D')" class="col col-50">
+                            <div class="jawaban">
+                                <p class="text-jawaban">{{jawabanD}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="row">-->
+                        <!--<div class="col-50 dark-border">-->
+                            <!--<button class="button-full button-positive">{{jawabanA}}</button>-->
+                        <!--</div>-->
+                        <!--<div class="col-50 dark-border">-->
+                            <!--<button class="button-full button-positive">{{jawabanB}}</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-50 dark-border">-->
+                            <!--<button class="button-full button-positive">{{jawabanC}}</button>-->
+                        <!--</div>-->
+                        <!--<div class="col-50 dark-border">-->
+                            <!--<button class="button-full button-positive">{{jawabanD}}</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!-- -->
+                    <!--<input class="item-input" ng-focus="showKeyboard()" ng-keyup="isTyping(userAnswer)" placeholder="Jawab" type="text"-->
+                           <!--ng-model="userAnswer" ng-show="button[0] || button[1] || button[2]" focus-me/>-->
+                    <!--<button class="button button-full button-positive" ng-click="jawabBabak1(userAnswer)" ng-show="button[0]">-->
+                        <!--Jawab-->
+                    <!--</button>-->
+                    <!--<button class="button button-full button-positive" ng-click="jawabBabak2(userAnswer)" ng-show="button[1]">-->
+                        <!--Jawab-->
+                    <!--</button>-->
+                    <!--<button class="button button-full button-positive" ng-click="jawabBabak3(userAnswer)" ng-show="button[2]">-->
+                        <!--Jawab-->
+                    <!--</button>-->
+                    <!--<button class="button button-full button-assertive" ng-click="showKeyboard()" ng-show="button[3]">-->
+                        <!--Jawab-->
+                    <!--</button>-->
+                </div>
+                <div class="item" ng-show="isType">
+                    {{opponentAct}}
+                </div>
+            </div>
+        </div>
+
+
+        <ion-scroll direction="y" class="sekerol" ng-show="view[1]">
+            <div class="card">
+                <ion-radio ng-model="$parent.answer" ng-repeat="pilih in pilihan_soal"
+                           ng-value="'{{pilih.id}}'" class="inputPilihan">
+                    <div class="row">
+                        <div class="col-center col-90 item-text-wrap">{{pilih.question}}</div>
+                        <div class="col-10"></div>
+                    </div>
+                </ion-radio>
+                <div class="text-center">
+                    <div class="row-center">
+                        <button class="button button-positive" ng-disabled="!answer" ng-click="doPilih(answer)">
+                            Pilih
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </ion-scroll>
+
+        <div ng-show="view[2]" class="card">
+            <div class="row row-center text-center" ng-repeat="image in images" ng-if="$index % 4 === 0">
+                <div ng-click="openQuestion($index)" class="col col-25 grid-babak3" ng-if="$index < images.length">
+                    <div class="sel">
+                        <p class="text-grid">{{images[$index].id + 1}}</p>
+                    </div>
+                </div>
+                <div ng-click="openQuestion($index + 1)" class="col col-25 grid-babak3"
+                     ng-if="$index + 1 < images.length">
+                    <div class="sel">
+                        <p class="text-grid">{{images[$index].id + 2}}</p>
+                    </div>
+                </div>
+                <div ng-click="openQuestion($index+2)" class="col col-25 grid-babak3"
+                     ng-if="$index + 2 < images.length">
+                    <div class="sel">
+                        <p class="text-grid">{{images[$index].id + 3}}</p>
+                    </div>
+                </div>
+                <div ng-click="openQuestion($index+3)" class="col col-25 grid-babak3"
+                     ng-if="$index + 3 < images.length">
+                    <div class="sel">
+                        <p class="text-grid">{{images[$index].id + 4}}</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </ion-content>
+    <ion-content ng-show="show[2]">
+        <div class="card" style="height: 100%">
+            <div class="item item-divider center-block">
+                <div class="row center-block">
+                    <div class="col-75">{{babakX}}<br/>akan dimulai dalam</div>
+                    <div class="col-25"><h1 id="timerNext">{{waktu2Next}}</h1></div>
+                </div>
+            </div>
+            <div class="item item-text-wrap" style="height: 70%">
+                {{textAboutBabak}}
+            </div>
+            <!--</div>-->
+            <!--<div class="card">-->
+            <div class="item">
+                <div class="row text-center" class="play-head">
+                    <div class="col">
+                        <div class="imageOne">
+                            <div class="row">
+                                <div class="col">
+                                    <img class="image-play" src="http://localhost:3000/images/images1.jpg">
+
+                                    <h3 class="profile-name">{{detail_ku['username']}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col row-center col-center">Vs</div>
+                    <div class="col">
+                        <div class="imageTwo">
+                            <div class="row">
+                                <div class="col">
+                                    <img class="image-play" src="http://localhost:3000/images/images1.jpg">
+
+                                    <h3 class="profile-name">{{detail_musuh['username']}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="row text-center">
+                    <div class="col"><strong>BABAK 1</strong></div>
+                </div>
+                <div class="row text-center">
+                    <div class="col">
+                        {{detail_ku['poinBabak1']}}
+                    </div>
+                    <div class="col">
+                        {{detail_musuh['poinBabak1']}}
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col"><strong>BABAK 2</strong></div>
+                </div>
+                <div class="row text-center">
+                    <div class="col">
+                        {{detail_ku['poinBabak2']}}
+                    </div>
+                    <div class="col">
+                        {{detail_musuh['poinBabak2']}}
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col"><strong>BABAK 3</strong></div>
+                </div>
+                <div class="row text-center">
+                    <div class="col">
+                        {{detail_ku['poinBabak3']}}
+                    </div>
+                    <div class="col">
+                        {{detail_musuh['poinBabak3']}}
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col"><strong>SKOR AKHIR</strong></div>
+                </div>
+                <div class="row text-center">
+                    <div class="col">
+                        {{detail_ku['poin']}}
+                    </div>
+                    <div class="col">
+                        {{detail_musuh['poin']}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+
+</ion-modal-view>

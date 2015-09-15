@@ -1,42 +1,97 @@
 <ion-view>
-    <ion-content ng-init="loadImages()">
-        <div style="height: 20%" class="card">
+    <ion-content>
+        <!--ng-init="loadImages()"-->
+        <div class="card">
             <div class="row" id="play-head">
                 <div class="col">
-                    <div id="box-image-play">
+                    <div class="imageOne">
                         <div class="row">
-
-                            <img id="image-play" src="http://placehold.it/50x50">
-                            <h4 id="play-skor">0</h4>
+                            <div class="col">
+                                <img class="image-play" src="profile/profil.jpg">
+                            </div>
+                            <div class="col row-center col-center">
+                                <h4 class="play-skor">{{ownPoin}}</h4>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-center row-center text-center time-top">
+                    <h3 class="row-center huruf-waktu" id="playTimer">{{waktu3}}</h3>
                 </div>
                 <div class="col">
-                    <div id="box-image-play">
+                    <div class="imageTwo">
                         <div class="row">
-                            <h4 id="play-skor">0</h4>
-                            <img id="image-play" src="http://placehold.it/50x50">
-
+                            <div class="col row-center col-center">
+                                <h4 class="play-skor">{{opponentPoin}}</h4>
+                            </div>
+                            <div class="col">
+                                <img class="image-play" src="profile/onoda.jpg">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card"style="height: 80%">
-        <div class="row" ng-repeat="image in images" ng-if="$index % 4 === 0">
-            <div ng-click="openModal()" class="col col-25" ng-if="$index < images.length">
-                <img ng-src="{{images[$index].src}}" width="100%" />
+            <div class="item item-text-wrap text-center">
+                <p>{{textGilir}}</p>
             </div>
-            <div class="col col-25" ng-if="$index + 1 < images.length">
-                <img ng-src="{{images[$index + 1].src}}" width="100%" />
+            <div class="row row-center text-center" ng-repeat="image in images" ng-if="$index % 4 === 0">
+                <div ng-click="openQuestion($index)" class="col col-25 grid-babak3" ng-if="$index < images.length">
+                    <div class="sel" ng-show="images[$index].normal">
+                        <p class="text-grid">{{images[$index].id + 1}}</p>
+                    </div>
+                    <div class="chosen" ng-show="images[$index].terpilih">
+                        <p class="text-grid">{{images[$index].id + 1}}</p>
+                    </div>
+                    <div class="player1" ng-show="images[$index].isOne">
+                        <p class="text-grid">{{images[$index].id + 1}}</p>
+                    </div>
+                    <div class="player2" ng-show="images[$index].isTwo">
+                        <p class="text-grid">{{images[$index].id + 1}}</p>
+                    </div>
+                </div>
+                <div ng-click="openQuestion($index + 1)" class="col col-25 grid-babak3" ng-if="$index + 1 < images.length">
+                    <div class="sel" ng-show="images[$index+1].normal">
+                        <p class="text-grid">{{images[$index].id + 2}}</p>
+                    </div>
+                    <div class="chosen" ng-show="images[$index+1].terpilih">
+                        <p class="text-grid">{{images[$index].id + 2}}</p>
+                    </div>
+                    <div class="player1" ng-show="images[$index + 1].isOne">
+                        <p class="text-grid">{{images[$index].id + 2}}</p>
+                    </div>
+                    <div class="player2" ng-show="images[$index + 1].isTwo">
+                        <p class="text-grid">{{images[$index].id + 2}}</p>
+                    </div>
+                </div>
+                <div ng-click="openQuestion($index+2)" class="col col-25 grid-babak3" ng-if="$index + 2 < images.length">
+                    <div class="sel" ng-show="images[$index+2].normal">
+                        <p class="text-grid">{{images[$index].id + 3}}</p>
+                    </div>
+                    <div class="chosen" ng-show="images[$index+2].terpilih">
+                        <p class="text-grid">{{images[$index].id + 3}}</p>
+                    </div>
+                    <div class="player1" ng-show="images[$index + 2].isOne">
+                        <p class="text-grid">{{images[$index].id + 3}}</p>
+                    </div>
+                    <div class="player2" ng-show="images[$index + 2].isTwo">
+                        <p class="text-grid">{{images[$index].id + 3}}</p>
+                    </div>
+                </div>
+                <div ng-click="openQuestion($index+3)" class="col col-25 grid-babak3" ng-if="$index + 3 < images.length">
+                    <div class="sel" ng-show="images[$index+3].normal">
+                        <p class="text-grid">{{images[$index].id + 4}}</p>
+                    </div>
+                    <div class="chosen" ng-show="images[$index+3].terpilih">
+                        <p class="text-grid">{{images[$index].id + 4}}</p>
+                    </div>
+                    <div class="player1" ng-show="images[$index + 3].isOne">
+                        <p class="text-grid">{{images[$index].id + 4}}</p>
+                    </div>
+                    <div class="player2" ng-show="images[$index + 3].isTwo">
+                        <p class="text-grid">{{images[$index].id + 4}}</p>
+                    </div>
+                </div>
             </div>
-            <div class="col col-25" ng-if="$index + 2 < images.length">
-                <img ng-src="{{images[$index + 2].src}}" width="100%" />
-            </div>
-            <div class="col col-25" ng-if="$index + 3 < images.length">
-                <img ng-src="{{images[$index + 3].src}}" width="100%" />
-            </div>
-        </div>
         </div>
     </ion-content>
 
@@ -45,14 +100,3 @@
     </ion-footer-bar>
 </ion-view>
 
-<script id="my-modal.html" type="text/ng-template">
-    <ion-modal-view>
-        <ion-header-bar>
-            <h1 class="title">My Modal title</h1>
-            <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>
-        </ion-header-bar>
-        <ion-content>
-            Hello!
-        </ion-content>
-    </ion-modal-view>
-</script>

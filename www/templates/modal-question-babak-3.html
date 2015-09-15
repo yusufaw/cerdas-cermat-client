@@ -1,0 +1,60 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">{{noSoal}}</h1>
+        <!--<div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>-->
+    </ion-header-bar>
+    <ion-content>
+        <div style="height: 15%" class="card">
+            <div class="row" id="play-head">
+                <div class="col">
+                    <div class="imageOne">
+                        <div class="row">
+                            <div class="col">
+                                <img class="image-play" src="http://localhost:3000/images/images1.jpg">
+                            </div>
+                            <div class="col row-center col-center">
+                                <h4 class="play-skor">{{ownPoin}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-center row-center text-center time-top">
+                    <h3 class="row-center huruf-waktu" id="playTimerQ">{{waktu_jawab}}</h3>
+                </div>
+                <div class="col">
+                    <div class="imageTwo">
+                        <div class="row">
+                            <div class="col row-center col-center">
+                                <h4 class="play-skor">{{opponentPoin}}</h4>
+                            </div>
+                            <div class="col">
+                                <img class="image-play" src="http://localhost:3000/images/images1.jpg">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="height: 10%" class="card">
+            <div class="item item-text-wrap text-center">
+                <p>{{textGilir}}</p>
+            </div>
+        </div>
+        <div style="height: 45%" class="card">
+            <div class="item item-text-wrap">
+                <p>{{soal}}</p>
+            </div>
+        </div>
+        <div style="height: 30%" class="card">
+            <div class="item" ng-show="isShift">
+                <input class="item-input" ng-keyup="isTyping(userAnswer)" placeholder="Jawab" type="text" ng-model="userAnswer"/>
+                <button class="button button-full button-positive" ng-click="jawab(userAnswer)">
+                    Jawab
+                </button>
+            </div>
+            <div class="item" ng-show="actText">
+                {{opponentAct}}
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>
