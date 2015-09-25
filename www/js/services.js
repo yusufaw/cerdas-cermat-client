@@ -1,6 +1,8 @@
 // var url = 'http://172.21.13.64:3000/';
-var url = 'http://127.0.0.1:3000';
-//var url = 'http://192.168.1.100:3000';
+//var url = 'http://127.0.0.1:3000';
+var url = 'http://10.34.241.212:3000';
+
+//var url = 'https://cerdascermat.heroku.com:3000';
 angular.module('starter.services', [])
 
 /**
@@ -78,6 +80,24 @@ angular.module('starter.services', [])
             }
         }
     })
+    .service('History', function ($http) {
+        return {
+            get: function (uname) {
+                var ress = [];
+                $http.get(url + '/api/match/u/'+uname).success(function (response) {
+                    ress = response;console.log(ress);
+                    return ress;
+
+                }).error(function (err) {
+                    ress = 'error : '+err;
+                    return ress;
+                });console.log(ress);
+                return ress;
+            }
+        }
+
+
+    })
 
     .service('LoginService', function ($q, $http) {
         return {
@@ -112,4 +132,12 @@ angular.module('starter.services', [])
                 return promise;
             }
         }
-    });
+    })
+    .service('URL', function(){
+        return{
+            get: function () {
+                return url;
+            }
+        }
+    })
+;

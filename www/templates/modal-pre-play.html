@@ -1,10 +1,9 @@
 <ion-modal-view>
-    <ion-header-bar>
-        <h1 class="title">{{steps}}</h1>
-        <!--<div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>-->
-    </ion-header-bar>
+    <!--<ion-header-bar>-->
+    <!--<h1 class="title">{{steps}}</h1>-->
+    <!--&lt;!&ndash;<div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>&ndash;&gt;-->
+    <!--</ion-header-bar>-->
     <ion-content ng-show="show[0]">
-        <!--ng-init="loadImages()"-->
         <div class="card" style="height: 100%">
             <div class="item item-divider center-block">
                 <div class="row center-block">
@@ -24,7 +23,7 @@
                         <div class="imageOne">
                             <div class="row">
                                 <div class="col">
-                                    <img class="image-play" src="profile/profil.jpg">
+                                    <img master ng-style="style" class="image-play" src="{{foto_profil}}">
 
                                     <h3 class="profile-name">{{detail_ku['username']}}</h3>
                                     <h4 class="play-skor">SKOR<br/>{{detail_ku['poin']}}</h4>
@@ -32,12 +31,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col row-center col-center">Vs</div>
+                    <div class="col row-center col-center">
+                        <div>Vs</div>
+                    </div>
                     <div class="col">
                         <div class="imageTwo">
                             <div class="row">
                                 <div class="col">
-                                    <img class="image-play" src="profile/onoda.jpg">
+                                    <img master ng-style="style" class="image-play" src="{{foto_profil_musuh}}">
 
                                     <h3 class="profile-name">{{detail_musuh['username']}}</h3>
                                     <h4 class="play-skor">SKOR<br/>{{detail_musuh['poin']}}</h4>
@@ -48,40 +49,49 @@
                 </div>
             </div>
         </div>
+
     </ion-content>
+
     <ion-content ng-show="show[1]" scroll="false">
-        <div class="card" ng-show="isHeader">
-            <div class="row" class="play-head">
-                <div class="col">
-                    <div class="imageOne">
-                        <div class="row">
-                            <div class="col">
-                                <img class="image-play" src="profile/profil.jpg">
-                            </div>
-                            <div class="col row-center col-center">
-                                <h4 class="play-skor">{{detail_ku['poin']}}</h4>
-                            </div>
+        <div class="card">
+            <div kepala class="row play-head">
+                <div class="col imageOne">
+
+                    <div class="row">
+                        <div class="col">
+                            <img master ng-style="style" class="image-play" src="{{foto_profil}}">
+                        </div>
+                        <div class="col row-center col-center">
+                            <h4 class="play-skor" id="myPoin">{{detail_ku['poin']}}</h4>
                         </div>
                     </div>
+
                 </div>
-                <div class="col-center row-center text-center time-top">
-                    <h3 class="row-center huruf-waktu" id="playTimer">{{waktu1}}</h3>
-                </div>
-                <div class="col">
-                    <div class="imageTwo">
-                        <div class="row">
-                            <div class="col row-center col-center">
-                                <h4 class="play-skor">{{detail_musuh['poin']}}</h4>
-                            </div>
-                            <div class="col">
-                                <img class="image-play" src="profile/onoda.jpg">
-                            </div>
+
+                <div class="col imageTwo">
+
+                    <div class="row">
+                        <div class="col row-center col-center">
+                            <h4 class="play-skor" id="urPoin">{{detail_musuh['poin']}}</h4>
                         </div>
+                        <div class="col">
+
+                            <img master ng-style="style" class="image-play" src="{{foto_profil_musuh}}">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class=" row" ng-style="timerStyle">
+                <div class="col row-center col-center">
+                    <div timer class="row-center text-center time-top " ng-style="hurufTimer">
+                        <h3 class="huruf-waktu" id="playTimer">{{waktu1}}</h3>
                     </div>
                 </div>
             </div>
-        <!--</div>-->
-        <!--<div style="height: 10%" class="card">-->
+            <!--</div>-->
+            <!--<div style="height: 10%" class="card">-->
             <div class="item item-text-wrap text-center">
                 {{textShift}}
             </div>
@@ -89,70 +99,34 @@
 
         <div ng-show="view[0]">
             <div style="height: 45%" class="card">
-                <div class="item item-text-wrap">
-                    <p>{{soal}}</p>
+                <div class="item item-divider calm-bg">
+                    Soal {{no_kotak}}
                 </div>
-                <div class="item" ng-show="isShift">
-                    <div class="row row-center text-center">
-                        <div ng-click="jawabBabak3('A')" class="col col-50">
+                <div class="item item-text-wrap text-center kotak-soal">
+                    <div class="tulisan-soal">{{soal}}</div>
+                </div>
+                <div class="item kotak-jawaban" ng-show="ndelik">
+                    <div class="row row-center text-center" ng-repeat="jawab in jawaban" ng-if="$index % 2 === 0">
+                        <div ng-click="kirimJawaban($index)" class="col col-50">
                             <div class="jawaban">
-                                <p class="text-jawaban">{{jawabanA}}</p>
+                                <div class="text-jawaban">{{jawaban[$index]}}</div>
                             </div>
                         </div>
-                        <div ng-click="jawabBabak3('B')" class="col col-50">
+                        <div ng-click="kirimJawaban($index + 1)" class="col col-50">
                             <div class="jawaban">
-                                <p class="text-jawaban">{{jawabanB}}</p>
+                                <div class="text-jawaban">{{jawaban[$index + 1]}}</div>
                             </div>
                         </div>
                     </div>
-                    <div class="row row-center text-center">
-                        <div ng-click="jawabBabak3('C')" class="col col-50">
-                            <div class="jawaban">
-                                <p class="text-jawaban">{{jawabanC}}</p>
-                            </div>
-                        </div>
-                        <div ng-click="jawabBabak3('D')" class="col col-50">
-                            <div class="jawaban">
-                                <p class="text-jawaban">{{jawabanD}}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--<div class="row">-->
-                        <!--<div class="col-50 dark-border">-->
-                            <!--<button class="button-full button-positive">{{jawabanA}}</button>-->
-                        <!--</div>-->
-                        <!--<div class="col-50 dark-border">-->
-                            <!--<button class="button-full button-positive">{{jawabanB}}</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="row">-->
-                        <!--<div class="col-50 dark-border">-->
-                            <!--<button class="button-full button-positive">{{jawabanC}}</button>-->
-                        <!--</div>-->
-                        <!--<div class="col-50 dark-border">-->
-                            <!--<button class="button-full button-positive">{{jawabanD}}</button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-                    <!-- -->
-                    <!--<input class="item-input" ng-focus="showKeyboard()" ng-keyup="isTyping(userAnswer)" placeholder="Jawab" type="text"-->
-                           <!--ng-model="userAnswer" ng-show="button[0] || button[1] || button[2]" focus-me/>-->
-                    <!--<button class="button button-full button-positive" ng-click="jawabBabak1(userAnswer)" ng-show="button[0]">-->
-                        <!--Jawab-->
-                    <!--</button>-->
-                    <!--<button class="button button-full button-positive" ng-click="jawabBabak2(userAnswer)" ng-show="button[1]">-->
-                        <!--Jawab-->
-                    <!--</button>-->
-                    <!--<button class="button button-full button-positive" ng-click="jawabBabak3(userAnswer)" ng-show="button[2]">-->
-                        <!--Jawab-->
-                    <!--</button>-->
-                    <!--<button class="button button-full button-assertive" ng-click="showKeyboard()" ng-show="button[3]">-->
-                        <!--Jawab-->
-                    <!--</button>-->
                 </div>
-                <div class="item" ng-show="isType">
+                <div class="item text-center" ng-show="isType">
                     {{opponentAct}}
+
+                </div>
+                <div class="item text-center row" ng-show="isType">
+                    <div class="col col-center row-center kotak_benar">
+                        <img class="gambar_benar" src="{{isTrueIcon}}">
+                    </div>
                 </div>
             </div>
         </div>
@@ -161,7 +135,7 @@
         <ion-scroll direction="y" class="sekerol" ng-show="view[1]">
             <div class="card">
                 <ion-radio ng-model="$parent.answer" ng-repeat="pilih in pilihan_soal"
-                           ng-value="'{{pilih.id}}'" class="inputPilihan">
+                           ng-value="'{{pilih.no}}'" class="inputPilihan">
                     <div class="row">
                         <div class="col-center col-90 item-text-wrap">{{pilih.question}}</div>
                         <div class="col-10"></div>
@@ -169,7 +143,7 @@
                 </ion-radio>
                 <div class="text-center">
                     <div class="row-center">
-                        <button class="button button-positive" ng-disabled="!answer" ng-click="doPilih(answer)">
+                        <button class="button button-positive" ng-click="doPilih(answer)">
                             Pilih
                         </button>
                     </div>
@@ -178,7 +152,8 @@
         </ion-scroll>
 
         <div ng-show="view[2]" class="card">
-            <div class="row row-center text-center" ng-repeat="image in images" ng-if="$index % 4 === 0">
+            <div class="row row-center text-center" ng-repeat="image in images" ng-if="$index % 4 === 0"
+                 ng-show="!isSelesai">
                 <div ng-click="openQuestion($index)" class="col col-25 grid-babak3" ng-if="$index < images.length">
                     <div class="sel">
                         <p class="text-grid">{{images[$index].id + 1}}</p>
@@ -201,9 +176,19 @@
                     <div class="sel">
                         <p class="text-grid">{{images[$index].id + 4}}</p>
                     </div>
-                    </div>
                 </div>
             </div>
+            <div class="item text-center row" ng-show="isSelesai">
+                <div class="col col-center row-center">{{isMenang}}<br/>
+                Poin Anda {{detail_ku['poin']}}</div>
+            </div>
+            <div class="item text-center row" ng-show="isSelesai">
+
+                <div class="col col-center row-center kotak_benar">
+                    <img class="gambar_benar" src="{{ikonAkhir}}">
+                </div>
+            </div>
+        </div>
         </div>
 
 
@@ -227,7 +212,7 @@
                         <div class="imageOne">
                             <div class="row">
                                 <div class="col">
-                                    <img class="image-play" src="http://localhost:3000/images/images1.jpg">
+                                    <img master ng-style="style" class="image-play" src="{{foto_profil}}">
 
                                     <h3 class="profile-name">{{detail_ku['username']}}</h3>
                                 </div>
@@ -239,7 +224,7 @@
                         <div class="imageTwo">
                             <div class="row">
                                 <div class="col">
-                                    <img class="image-play" src="http://localhost:3000/images/images1.jpg">
+                                    <img master ng-style="style" class="image-play" src="{{foto_profil_musuh}}">
 
                                     <h3 class="profile-name">{{detail_musuh['username']}}</h3>
                                 </div>
@@ -249,10 +234,10 @@
                 </div>
             </div>
             <div class="item">
-                <div class="row text-center">
+                <div class="row text-center" ng-show="poinBabak1">
                     <div class="col"><strong>BABAK 1</strong></div>
                 </div>
-                <div class="row text-center">
+                <div class="row text-center" ng-show="poinBabak1">
                     <div class="col">
                         {{detail_ku['poinBabak1']}}
                     </div>
@@ -260,10 +245,10 @@
                         {{detail_musuh['poinBabak1']}}
                     </div>
                 </div>
-                <div class="row text-center">
+                <div class="row text-center" ng-show="poinBabak2">
                     <div class="col"><strong>BABAK 2</strong></div>
                 </div>
-                <div class="row text-center">
+                <div class="row text-center" ng-show="poinBabak2">
                     <div class="col">
                         {{detail_ku['poinBabak2']}}
                     </div>
@@ -271,10 +256,10 @@
                         {{detail_musuh['poinBabak2']}}
                     </div>
                 </div>
-                <div class="row text-center">
+                <div class="row text-center" ng-show="poinBabak3">
                     <div class="col"><strong>BABAK 3</strong></div>
                 </div>
-                <div class="row text-center">
+                <div class="row text-center" ng-show="poinBabak3">
                     <div class="col">
                         {{detail_ku['poinBabak3']}}
                     </div>
@@ -283,7 +268,7 @@
                     </div>
                 </div>
                 <div class="row text-center">
-                    <div class="col"><strong>SKOR AKHIR</strong></div>
+                    <div class="col"><strong>SKOR {{isAkhir}}</strong></div>
                 </div>
                 <div class="row text-center">
                     <div class="col">

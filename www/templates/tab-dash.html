@@ -1,19 +1,18 @@
-<ion-side-menus ng-controller="NavCtrl">
-    <ion-side-menu-content>
-        <ion-nav-bar class="bar-positive">
-            <ion-nav-back-button>
-            </ion-nav-back-button>
-        </ion-nav-bar>
+<!--<ion-side-menus ng-controller="NavCtrl">-->
+    <!--<ion-side-menu-content>-->
+        <!--<ion-nav-bar class="bar-positive">-->
+            <!--<ion-nav-back-button>-->
+            <!--</ion-nav-back-button>-->
+        <!--</ion-nav-bar>-->
         <!--<ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" ng-click="showMenu()">
             </button>
         </ion-nav-buttons>-->
 
-        <ion-nav-buttons side="right">
-            <button class="button button-icon button-clear ion-ios7-gear" ng-click="showRightMenu()">
-            </button>
-        </ion-nav-buttons>
-
+        <!--<ion-nav-buttons side="right">-->
+            <!--<button class="button button-icon button-clear ion-ios7-gear" ng-click="showRightMenu()">-->
+            <!--</button>-->
+        <!--</ion-nav-buttons>-->
 
         <ion-view title="Cerdas Cermat">
             <ion-content>
@@ -21,37 +20,42 @@
 
                 <!--<div id="profile-bg"></div>-->
                 <div id="profile-info">
-                    <img id="profile-image" src="profile/profil.jpg">
+                    <img id="profile-image" src="{{foto_profil}}">
 
                     <h3 id="profile-name">{{username}}</h3>
-                    <img class="nyawa-image" src="http://localhost:3000/images/love.png">
-                    <img class="nyawa-image" src="http://localhost:3000/images/love.png">
-                    <img class="nyawa-image" src="http://localhost:3000/images/love.png">
-                    <br/>
+                    <!--<img class="nyawa-image" src="http://localhost:3000/images/love.png">-->
+                    <!--<img class="nyawa-image" src="http://localhost:3000/images/love.png">-->
+                    <!--<img class="nyawa-image" src="http://localhost:3000/images/love.png">-->
+                    <!--<br/>-->
                     <span class="profile-description">Poin : {{mypoin}}</span>
                     <br/>
                     <span class="profile-description">Menang : 0</span><br/>
                     <br/>
                     <br/>
-                    <button class="button button-positive" ng-click="challenge()">
+                    <button class="button button-balanced" ng-click="challenge()">
                         Mulai Main
+                    </button>
+                    <br />
+                    <br />
+                    <button class="button button-assertive" ng-click="logout()">
+                        Keluar
                     </button>
                 </div>
             </ion-content>
         </ion-view>
     </ion-side-menu-content>
 
-    <ion-side-menu side="right">
-        <ion-header-bar>
-            <h1 class="title">Right Menu</h1>
-        </ion-header-bar>
-        <ion-content>
-            <ion-list>
-                <ion-item ng-click="logout()">
-                    Logout
-                </ion-item>
-            </ion-list>
-        </ion-content>
-    </ion-side-menu>
+    <!--<ion-side-menu side="right">-->
+        <!--<ion-header-bar>-->
+            <!--<h1 class="title">Right Menu</h1>-->
+        <!--</ion-header-bar>-->
+        <!--<ion-content>-->
+            <!--<ion-list>-->
+                <!--<ion-item ng-click="logout()">-->
+                    <!--Logout-->
+                <!--</ion-item>-->
+            <!--</ion-list>-->
+        <!--</ion-content>-->
+    <!--</ion-side-menu>-->
 
-</ion-side-menus>
+<!--</ion-side-menus>-->

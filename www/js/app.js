@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
-    .filter('relativets', function() {
-        return function(value) {
+    .filter('relativets', function () {
+        return function (value) {
             var now = new Date();
             var diff = now - value;
 
@@ -17,21 +17,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             var minute = second * 60;
             var hour = minute * 60;
             var day = hour * 24;
-            var year =  day * 365;
+            var year = day * 365;
             //var month = day * 30;
 
             var unit = day;
             var unitStr = 'd';
-            if(diff > year) {
+            if (diff > year) {
                 unit = year;
                 unitStr = 'y';
-            } else if(diff > day) {
+            } else if (diff > day) {
                 unit = day;
                 unitStr = 'd';
-            } else if(diff > hour) {
+            } else if (diff > hour) {
                 unit = hour;
                 unitStr = 'h';
-            } else if(diff > minute) {
+            } else if (diff > minute) {
                 unit = minute;
                 unitStr = 'm';
             } else {
@@ -77,7 +77,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             .state('tab', {
                 url: "/tab",
                 abstract: true,
-                templateUrl: "templates/tabs.html"
+                templateUrl: "templates/tabs.html",
+                controller: 'DashCtrl'
             })
 
 
@@ -88,27 +89,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                 cache: false,
                 views: {
                     'tab-dash': {
-                        templateUrl: 'templates/tab-dash.html',
-                        controller: 'DashCtrl'
+                        templateUrl: 'templates/tab-dash.html'
                     }
                 }
             })
 
-            .state('tab.friends', {
-                url: '/friends',
+            .state('tab.history', {
+                url: '/history',
                 views: {
                     'tab-friends': {
-                        templateUrl: 'templates/tab-friends.html',
-                        controller: 'FriendsCtrl'
-                    }
-                }
-            })
-            .state('tab.friend-detail', {
-                url: '/friend/:friendId',
-                views: {
-                    'tab-friends': {
-                        templateUrl: 'templates/friend-detail.html',
-                        controller: 'FriendDetailCtrl'
+                        templateUrl: 'templates/tab-history.html',
+                        controller: 'HistoryCtrl'
                     }
                 }
             })
@@ -127,45 +118,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                 templateUrl: 'templates/login.html',
                 controller: 'LoginCtrl'
             })
-            .state('category', {
-                url: '/category',
-                templateUrl: 'templates/category.html',
-                controller: 'CategoryCtrl'
-            })
-            .state('got-opp', {
-                url: '/got-opp',
-                templateUrl: 'templates/got-opponent.html',
-                controller: 'GotOppCtrl'
-            })
-            .state('pre-babak-1', {
-                url: '/pre-babak-1',
-                cache: false,
-                templateUrl: 'templates/pre-babak-1.html',
-                controller: 'PreBabak1Ctrl'
-            })
-            .state('profile', {
-                url: '/profile',
-                templateUrl: 'templates/profile.html',
-                controller: 'ProfileCtrl'
-            })
-            .state('babak-1', {
-                url: '/babak-1',
-                cache: false,
-                templateUrl: 'templates/babak-1.html',
-                controller: 'PlayBabak1Ctrl'
-            })
-            .state('babak-2', {
-                url:'/babak-2',
-                cache: false,
-                templateUrl: 'templates/babak-2.html',
-                controller: 'PlayBabak2Ctrl'
-            })
-            .state('babak-3', {
-                url: '/babak-3',
-                cache: false,
-                templateUrl: 'templates/babak-3.html',
-                controller: 'PlayBabak3Ctrl'
-            })
         ;
 
         // if none of the above states are matched, use this as the fallback
@@ -182,4 +134,64 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                 }, 150);
             }
         };
-    });
+    })
+    .directive('master', function () { //declaration; identifier master
+        function link(scope, element, attrs) { //scope we are in, element we are bound to, attrs of that element
+            scope.$watch(function () { //watch any changes to our element
+                scope.style = { //scope variable style, shared with our controller
+                    height: element[0].offsetWidth + 'px'  //set the height in style to our elements height
+                    //width:element[0].offsetWidth+'px' //same with width
+                };
+            });
+        }
+
+        return {
+            restrict: 'AE', //describes how we can assign an element to our directive in this case like <div master></div
+            link: link // the function to link to our element
+        };
+    })
+    .directive('kepala', function () {
+        function link(scope, element, attrs) {
+            scope.$watch(function () {
+                scope.timerStyle = {
+                    'margin-top': (element[0].offsetHeight * -1) + 'px',
+                    'min-height': element[0].offsetHeight + 'px'
+                };
+            });
+        }
+
+        return {
+            restrict: 'AE',
+            link: link
+        };
+    })
+    .directive('timer', function () {
+        function link(scope, element, attrs) {
+            scope.$watch(function () {
+                if (element[0].offsetWidth > element[0].offsetHeight) {
+                    scope.hurufTimer = {
+                        'height': element[0].offsetWidth + 'px',
+                        'line-height':element[0].offsetWidth + 'px'
+                    };
+                }
+                else if (element[0].offsetWidth < element[0].offsetHeight) {
+                    scope.hurufTimer = {
+                        'width': element[0].offsetHeight + 'px',
+                        'line-height':element[0].offsetHeight + 'px'
+                    };
+                }
+            });
+        }
+
+        return {
+            restrict: 'AE',
+            link: link
+        };
+    })
+    .directive('pre-play', function(){
+      return {
+        restrict : 'AE',
+        templateUrl: 'templates/pre-play.html'
+      }
+    })
+;

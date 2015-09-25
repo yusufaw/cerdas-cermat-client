@@ -1,0 +1,17 @@
+<ion-view title="Kategori">
+  <ion-content class="has-header">
+      <div class="card">
+          <ion-list show-delete="false" can-swipe="true">
+              <div class="item item-divider">
+                  Riwayat Permainan
+              </div>
+              <ion-item class=" item-icon-right" item-type="item-text-wrap" ng-repeat="data in riwayat">
+                  <!--<img ng-src="assets/calendar.png"/>-->
+                  <h2>{{data.u[0]}} : {{data.p[0]}} vs {{data.p[1]}} : {{data.u[1]}}</h2>
+                  <p><span class="ion-calendar"></span> {{data.d}}</p>
+                  <i class="icon icon-accessory"></i>
+              </ion-item>
+          </ion-list>
+      </div>
+  </ion-content>
+</ion-view>
