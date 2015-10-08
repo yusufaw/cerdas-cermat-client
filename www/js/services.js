@@ -1,6 +1,7 @@
 // var url = 'http://172.21.13.64:3000/';
 //var url = 'http://127.0.0.1:3000';
-var url = 'http://10.34.241.212:3000';
+//var url = 'http://10.34.241.212:3000';
+var url = 'http://192.168.1.100:3000';
 
 //var url = 'https://cerdascermat.heroku.com:3000';
 angular.module('starter.services', [])
@@ -80,7 +81,7 @@ angular.module('starter.services', [])
             }
         }
     })
-    .service('History', function ($http) {
+    .service('History', function ($http, $rootScope) {
         return {
             get: function (uname) {
                 var ress = [];
@@ -99,7 +100,7 @@ angular.module('starter.services', [])
 
     })
 
-    .service('LoginService', function ($q, $http) {
+    .service('LoginService', function ($q, $http, $rootScope) {
         return {
             loginUser: function (name, pw) {
                 var deferred = $q.defer();

@@ -1,18 +1,43 @@
 <ion-view view-title="Login" name="login-view">
-    <ion-content class="padding">
-
-        <!--<div class="text-center">-->
-            <!--<img class="icon-login" src="img/icon.png" />-->
-        <!--</div>-->
-
-        <div class="list list-inset">
+    <ion-content class="padding bg-login">
+        <!--<img style="width: 50%" src="img/icon-cc.png">-->
+        <div class="list list-inset bg-login">
+            <div class="text text-center text-login">Username</div>
             <label class="item item-input input-lg">
-                <input type="text" placeholder="Username" ng-model="data.username">
+                <input type="text" class="text-center" ng-model="data.username">
             </label>
-            <label class="item item-input input-lg">
-                <input type="password" placeholder="Password" ng-model="data.password">
+            <br>
+
+            <div class="text text-center text-login">Password</div>
+            <label class="item item-input input-lg text-center">
+                <input type="password" class="text-center" ng-model="data.password">
             </label>
         </div>
-        <button class="button button-block button-calm" ng-click="login()">Masuk</button>
+        <div class="text-center">
+            <div class="row-center">
+                <button class="button-large btn-login" ng-click="login()">Masuk</button>
+            </div>
+        </div>
+        <!--<br><br><br><br><br><br>-->
+
+        <!--<div class="row-center text-center" ng-show="!isEditIp">-->
+            <!--{{url}}-->
+        <!--</div>-->
+        <!--<div class="list list-inset" ng-show="isEditIp">-->
+
+                <!--<label class="item item-input input-lg text-center">-->
+                    <!--<input type="text" class="text-center" ng-model="url">-->
+                <!--</label>-->
+
+        <!--</div>-->
+        <!--<div class="row text-center">-->
+            <!--&lt;!&ndash;<div class="col row-center">&ndash;&gt;-->
+            <!--&lt;!&ndash;<button class="button btn-merah" ng-click="login()">Daftar</button>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+            <!--<div class="col row-center">-->
+                <!--<button class="button btn-merah" ng-click="editIp(url)">Edit IP</button>-->
+            <!--</div>-->
+        <!--</div>-->
     </ion-content>
 </ion-view>

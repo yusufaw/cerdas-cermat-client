@@ -44,7 +44,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
     })
 
-    .run(function ($ionicPlatform) {
+    .run(function ($ionicPlatform, $rootScope) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -55,24 +55,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                 // org.apache.cordova.statusbar required
                 StatusBar.styleDefault();
             }
+            $rootScope['url'] = '192.168.1.100';
         });
     })
 
     .config(function ($stateProvider, $urlRouterProvider) {
+
 
         // Ionic uses AngularUI Router which uses the concept of states
         // Learn more here: https://github.com/angular-ui/ui-router
         // Set up the various states which the app can be in.
         // Each state's controller can be found in controllers.js
         $stateProvider
-            .state('app', {
-                url: "/app",
-                views: {
-                    'tab-app': {
-                        templateUrl: "templates/menu.html"
-                    }
-                }
-            })
+
             // setup an abstract state for the tabs directive
             .state('tab', {
                 url: "/tab",
@@ -100,16 +95,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                     'tab-friends': {
                         templateUrl: 'templates/tab-history.html',
                         controller: 'HistoryCtrl'
-                    }
-                }
-            })
-
-            .state('tab.account', {
-                url: '/account',
-                views: {
-                    'tab-account': {
-                        templateUrl: 'templates/tab-account.html',
-                        controller: 'AccountCtrl'
                     }
                 }
             }).state('login', {

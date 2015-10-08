@@ -18,32 +18,40 @@
             <!--</div>-->
             <!--<div class="card">-->
             <div class="item">
-                <div class="row text-center" class="play-head">
-                    <div class="col">
-                        <div class="imageOne">
-                            <div class="row">
-                                <div class="col">
-                                    <img master ng-style="style" class="image-play" src="{{foto_profil}}">
+                <div kepala class="row text-center play-head">
+                    <div class="col imageOne">
+                        <div class="row">
+                            <div class="col row-center col-center">
+                                <img master ng-style="style" class="image-pre" src="{{foto_profil}}">
+                                <h2 class="profile-name"><b>{{detail_ku['username']}}</b></h2>
+                                <h3 class="play-skor">Poin : {{detail_ku['poin']}}</h3>
+                                <h3 class="play-skor">Menang : {{detail_ku['poin']}}</h3>
+                            </div>
+                        </div>
 
-                                    <h3 class="profile-name">{{detail_ku['username']}}</h3>
-                                    <h4 class="play-skor">SKOR<br/>{{detail_ku['poin']}}</h4>
-                                </div>
+                    </div>
+                    <!--<div class="col row-center col-center">-->
+                        <!--<div>Vs</div>-->
+                    <!--</div>-->
+                    <div class="col imageTwo">
+                        <div class="row">
+                            <div class="col row-center col-center">
+                                <img master ng-style="style" class="image-pre" src="{{foto_profil_musuh}}">
+                                <h2 class="profile-name"><b>{{detail_musuh['username']}}</b></h2>
+                                <h3 class="play-skor">Poin : {{detail_musuh['poin']}}</h3>
+                                <h3 class="play-skor">Menang : {{detail_musuh['poin']}}</h3>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class=" row" ng-style="timerStyle">
                     <div class="col row-center col-center">
-                        <div>Vs</div>
-                    </div>
-                    <div class="col">
-                        <div class="imageTwo">
-                            <div class="row">
-                                <div class="col">
-                                    <img master ng-style="style" class="image-play" src="{{foto_profil_musuh}}">
-
-                                    <h3 class="profile-name">{{detail_musuh['username']}}</h3>
-                                    <h4 class="play-skor">SKOR<br/>{{detail_musuh['poin']}}</h4>
-                                </div>
-                            </div>
+                        <div timer class="row-center text-center vs-pre " ng-style="hurufTimer">
+                            <h3>Vs
+                                <!--<br />-->
+                            <!--Vs<br />-->
+                            <!--Vs-->
+                            </h3>
                         </div>
                     </div>
                 </div>
@@ -56,7 +64,6 @@
         <div class="card">
             <div kepala class="row play-head">
                 <div class="col imageOne">
-
                     <div class="row">
                         <div class="col">
                             <img master ng-style="style" class="image-play" src="{{foto_profil}}">
@@ -65,19 +72,15 @@
                             <h4 class="play-skor" id="myPoin">{{detail_ku['poin']}}</h4>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="col imageTwo">
-
                     <div class="row">
                         <div class="col row-center col-center">
                             <h4 class="play-skor" id="urPoin">{{detail_musuh['poin']}}</h4>
                         </div>
                         <div class="col">
-
                             <img master ng-style="style" class="image-play" src="{{foto_profil_musuh}}">
-
                         </div>
                     </div>
 
@@ -100,7 +103,7 @@
         <div ng-show="view[0]">
             <div style="height: 45%" class="card">
                 <div class="item item-divider calm-bg">
-                    Soal {{no_kotak}}
+                    Soal {{langkah % 2}}
                 </div>
                 <div class="item item-text-wrap text-center kotak-soal">
                     <div class="tulisan-soal">{{soal}}</div>
@@ -180,7 +183,8 @@
             </div>
             <div class="item text-center row" ng-show="isSelesai">
                 <div class="col col-center row-center">{{isMenang}}<br/>
-                Poin Anda {{detail_ku['poin']}}</div>
+                    Poin Anda {{detail_ku['poin']}}
+                </div>
             </div>
             <div class="item text-center row" ng-show="isSelesai">
 
@@ -207,28 +211,34 @@
             <!--</div>-->
             <!--<div class="card">-->
             <div class="item">
-                <div class="row text-center" class="play-head">
-                    <div class="col">
-                        <div class="imageOne">
-                            <div class="row">
-                                <div class="col">
-                                    <img master ng-style="style" class="image-play" src="{{foto_profil}}">
+                <div kepala class="row text-center play-head">
+                    <div class="col imageOne">
+                        <div class="row">
+                            <div class="col row-center col-center">
+                                <img master ng-style="style" class="image-pre" src="{{foto_profil}}">
+                            </div>
+                        </div>
 
-                                    <h3 class="profile-name">{{detail_ku['username']}}</h3>
-                                </div>
+                    </div>
+                    <!--<div class="col row-center col-center">-->
+                    <!--<div>Vs</div>-->
+                    <!--</div>-->
+                    <div class="col imageTwo">
+                        <div class="row">
+                            <div class="col row-center col-center">
+                                <img master ng-style="style" class="image-pre" src="{{foto_profil_musuh}}">
                             </div>
                         </div>
                     </div>
-                    <div class="col row-center col-center">Vs</div>
-                    <div class="col">
-                        <div class="imageTwo">
-                            <div class="row">
-                                <div class="col">
-                                    <img master ng-style="style" class="image-play" src="{{foto_profil_musuh}}">
-
-                                    <h3 class="profile-name">{{detail_musuh['username']}}</h3>
-                                </div>
-                            </div>
+                </div>
+                <div class=" row" ng-style="timerStyle">
+                    <div class="col row-center col-center">
+                        <div timer class="row-center text-center vs-pre " ng-style="hurufTimer">
+                            <h3>Vs
+                                <!--<br />-->
+                                <!--Vs<br />-->
+                                <!--Vs-->
+                            </h3>
                         </div>
                     </div>
                 </div>
