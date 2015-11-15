@@ -1,9 +1,9 @@
 // var url = 'http://172.21.13.64:3000/';
 //var url = 'http://127.0.0.1:3000';
-//var url = 'http://10.34.241.212:3000';
-var url = 'http://192.168.1.100:3000';
+//var url = 'http://10.34.241.45:3000';
+//var url = 'http://192.168.1.100:3000';
 
-//var url = 'https://cerdascermat.heroku.com:3000';
+var url = 'http://cerdascermat.herokuapp.com';
 angular.module('starter.services', [])
 
 /**
@@ -32,7 +32,7 @@ angular.module('starter.services', [])
     })
 
     .factory('socket', ['$rootScope', function ($rootScope) {
-        var socket = io.connect(url);
+        var socket = io.connect("https://cerdascermat.herokuapp.com:443");
 
         return {
             on: function (eventName, callback) {
@@ -62,26 +62,7 @@ angular.module('starter.services', [])
             }
         };
     }])
-
-    .service('CategoryQuestion', function () {
-        var categories = [
-            {id: 0, name: 'Pengetahuan Alam', face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'},
-            {id: 1, name: 'Matematika', face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'},
-            {id: 2, name: 'Pengetahuan Umum', face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'},
-            {id: 3, name: 'Bahasa Inggris', face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'},
-            {id: 4, name: 'Kewarganegaraan', face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'}
-        ];
-
-        return{
-            all: function () {
-                return categories;
-            },
-            get: function (categoryId) {
-                return categories[categoryId];
-            }
-        }
-    })
-    .service('History', function ($http, $rootScope) {
+    .service('History', function ($http) {
         return {
             get: function (uname) {
                 var ress = [];
@@ -116,12 +97,6 @@ angular.module('starter.services', [])
                 }).error(function (err) {
                     deferred.reject('0');
                 });
-
-//                if (name == 'user') {
-//                    deferred.resolve('Welcome ' + name + '!');
-//                } else {
-//                    deferred.reject('Wrong credentials.');
-//                }
                 promise.success = function (fn) {
                     promise.then(fn);
                     return promise;
@@ -130,6 +105,33 @@ angular.module('starter.services', [])
                     promise.then(null, fn);
                     return promise;
                 };console.log(promise)
+                return promise;
+            },
+            daftarUser : function (name, pw) {
+                var deferred = $q.defer();
+                var promise = deferred.promise;
+                var data = {'username': name, 'password': pw}; //192.168.43.107 //192.168.1.204
+                $http.post(url + '/api/user/daftar', data).success(function (response) {
+                    if (response == 1) {
+                        deferred.resolve('Welcome ' + name + '!');
+                    }
+                    else {
+                        alert('gagal');
+                        deferred.reject('1');
+                    }
+                }).error(function (err) {
+                    alert('error');
+                    deferred.reject('0');
+                });
+                promise.success = function (fn) {
+                    promise.then(fn);
+                    return promise;
+                };
+                promise.error = function (fn) {
+                    promise.then(null, fn);
+                    return promise;
+                };
+                console.log(promise)
                 return promise;
             }
         }

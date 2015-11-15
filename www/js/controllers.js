@@ -1,6 +1,7 @@
 angular.module('starter.controllers', [])
     .controller('DashCtrl', ['$scope', '$state', 'socket', '$ionicLoading', '$ionicHistory', '$rootScope', '$ionicModal', '$interval', 'URL', function ($scope, $state, socket, $ionicLoading, $ionicHistory, $rootScope, $ionicModal, $interval, URL) {
-        var url = URL.get(); // mendapatkan alamat game server
+        var uerel = URL.get(); // mendapatkan alamat game server
+        var urlImg = 'http://crevion.net/cerdascermat/img/users/'
         var stopPrePlay; // variabel untuk timer pre play
         var tipeUser = ''; //tipe user (X or Y) babak 1 untuk gantian diserver
         var tipeUser2 = '';//tipe user (X or Y) babak 2 untuk gantian diserver
@@ -36,7 +37,7 @@ angular.module('starter.controllers', [])
         $scope.steps = 0;
         $scope.username = localStorage.getItem("username");
         console.log('Hello, this is dash page!');
-        $scope.foto_profil = url + '/images/user/' + $scope.username + '.jpg';
+        $scope.foto_profil = urlImg + $scope.username + '.jpg';
         $scope.mypoin = 0;
         $scope.isEditIp = false;
 
@@ -71,6 +72,9 @@ angular.module('starter.controllers', [])
             localStorage.setItem("username", "");
             localStorage.setItem("password", "");
             $scope.hideLoading();
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
             $state.go('login');
         };
 
@@ -84,7 +88,7 @@ angular.module('starter.controllers', [])
             $ionicLoading.hide();
         };
 
-        socket.on('halo', function (data) {
+        socket.on('halo', function () {
             $scope.hideLoading();
             $scope.play();
         });
@@ -150,7 +154,7 @@ angular.module('starter.controllers', [])
                 'poinBabak2': 0,
                 'poinBabak3': 0
             };
-            $scope.foto_profil_musuh = url + '/images/user/' + data.username + '.jpg';
+            $scope.foto_profil_musuh = urlImg + data.username + '.jpg';
         });
 
         socket.on('ready wait all', function () {
@@ -685,15 +689,15 @@ angular.module('starter.controllers', [])
 
         socket.on('babak 3 done', function (data) {
             if (data[0].username == $scope.detail_ku['username']) {
-                $scope.detail_ku['poinBabak3'] = data[0].poin;
-                $scope.detail_musuh['poinBabak3'] = data[1].poin;
+                $scope.detail_ku['poin'] = data[0].poin;
+                $scope.detail_musuh['poin'] = data[1].poin;
             }
             else {
-                $scope.detail_ku['poinBabak3'] = data[1].poin;
-                $scope.detail_musuh['poinBabak3'] = data[0].poin;
+                $scope.detail_ku['poin'] = data[1].poin;
+                $scope.detail_musuh['poin'] = data[0].poin;
             }
-            $scope.detail_ku['poin'] = $scope.detail_ku['poinBabak1'] + $scope.detail_ku['poinBabak2'] + $scope.detail_ku['poinBabak3'];
-            $scope.detail_musuh['poin'] = $scope.detail_musuh['poinBabak1'] + $scope.detail_musuh['poinBabak2'] + $scope.detail_musuh['poinBabak3'];
+            $scope.detail_ku['poinBabak3'] = $scope.detail_ku['poin'] - $scope.detail_ku['poinBabak2'] - $scope.detail_ku['poinBabak1'];
+            $scope.detail_musuh['poinBabak3'] = $scope.detail_musuh['poin'] - $scope.detail_musuh['poinBabak2'] - $scope.detail_musuh['poinBabak1'];
             $scope.textShift = "SELESAI";
             $scope.isSelesai = true;
             setView(2);
@@ -715,19 +719,6 @@ angular.module('starter.controllers', [])
                 setShow(2);
                 $scope.babakX = 'Kembali ke Home';
                 $scope.textAboutBabak = '';
-                var tempDate = new Date();
-                var dtGame = {
-                    'tanggal': '' + tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear() + '  ' + tempDate.getHours() + ':' + tempDate.getMinutes(),
-                    'poinku': parseInt($scope.detail_ku['poin'], 10),
-                    'uMusuh': $scope.detail_musuh['username'],
-                    'poinMusuh': parseInt($scope.detail_musuh['poin'], 10)
-                };
-                var obj = JSON.parse(localStorage.getItem('data-game'));
-                if (obj == null) {
-                    obj = [];
-                }
-                obj.push(dtGame);
-                localStorage.setItem('data-game', JSON.stringify(obj));
                 $scope.waktu2Next = secondDone;
                 if (angular.isDefined(stopKeHome)) return;
                 stopKeHome = $interval(function () {
@@ -918,34 +909,60 @@ angular.module('starter.controllers', [])
         });
     }])
 
-    .controller('LoginCtrl', ['$scope', 'LoginService', '$ionicPopup', '$state', 'socket', '$ionicHistory' ,'$rootScope', function ($scope, LoginService, $ionicPopup, $state, socket, $ionicHistory, $rootScope) {
-        $scope.editIp = function (x) {
-            if($scope.isEditIp) {
-                $rootScope['url'] = x;
-                $scope.$emit('todo:urlChanged');
-            }
-            else{
-                $scope.isEditIp =!$scope.isEditIp;
-            }
+    .controller('LoginCtrl', ['$scope', 'LoginService', '$ionicPopup', '$state', 'socket', '$ionicHistory' ,'$rootScope','$ionicLoading', function ($scope, LoginService, $ionicPopup, $state, socket, $ionicHistory, $rootScope, $ionicLoading) {
+        $scope.showLoading = function () {
+            $ionicLoading.show({
+                template: 'loading...'
+            });
         };
+
+        $scope.hideLoading = function () {
+            $ionicLoading.hide();
+        };
+
+        $scope.alamatGambar = 'img/icon_user.png';
         console.log('ini halaman login');
         if (localStorage.getItem("username") != "") {
+            $scope.showLoading();
             LoginService.loginUser(localStorage.getItem("username"), localStorage.getItem("password")).success(function () {
                 socket.emit('successlogin', {username: localStorage.getItem("username")});
                 console.log(localStorage.username + ' berhasil login');
-                $state.go('tab.dash');
-            }).error(function () {
+                socket.on('auth', function (auth) {
+                    if (auth == 1) {
+                        $ionicHistory.nextViewOptions({
+                            disableBack: true
+                        });
+                        $state.go('tab.dash');
+                    }
+                    else {
+                        $scope.template = 'Akun pemain ini sedang digunakan';
+                        $ionicPopup.alert({
+                            title: 'Login gagal!',
+                            template: $scope.template
+                        });
+                    }
+                });
+                $scope.hideLoading();
+            }).error(function (data) {
+                if (data == '0') {
+                    $scope.template = 'Terjadi kesalahan koneksi, atau terjadi gangguan pada server!';
+                }
+                else if (data == '1') {
+                    $scope.template = 'Username atau password salah';
+                }
                 $ionicPopup.alert({
-                    title: 'Login Gagal!',
-                    template: 'Terjadi gangguan pada server!'
+                    title: 'Login gagal!',
+                    template: $scope.template
                 });
                 localStorage.setItem("username", "");
                 localStorage.setItem("password", "");
+                $scope.hideLoading();
             });
         }
         $scope.data = {};
 
         $scope.login = function () {
+            $scope.showLoading();
             $scope.template = '';
 
             LoginService.loginUser($scope.data.username.toLowerCase(), $scope.data.password).success(function () {
@@ -960,17 +977,18 @@ angular.module('starter.controllers', [])
                         $state.go('tab.dash');
                     }
                     else {
-                        $scope.template = 'User sudah login';
+                        $scope.template = 'Akun pemain ini sedang digunakan';
                         $ionicPopup.alert({
                             title: 'Login gagal!',
                             template: $scope.template
                         });
                     }
-                })
+                });
+                $scope.hideLoading();
 
             }).error(function (data) {
                 if (data == '0') {
-                    $scope.template = 'Terjadi kesalahan koneksi, atau terjadi gangguan pada server!/nSilahkan hubungi untuk keterangan lebih lanjut';
+                    $scope.template = 'Terjadi kesalahan koneksi, atau terjadi gangguan pada server!';
                 }
                 else if (data == '1') {
                     $scope.template = 'Username atau password salah';
@@ -981,18 +999,94 @@ angular.module('starter.controllers', [])
                 });
                 localStorage.setItem("username", "");
                 localStorage.setItem("password", "");
+                $scope.hideLoading();
+            });
+        };
+
+        $scope.pilihGambar = function () {
+            $scope.alamatGambar ="";
+            window.imagePicker.getPictures(
+                function(results) {
+                    for (var i = 0; i < results.length; i++) {
+                        console.log('Image URI: ' + results[i]);
+                        $scope.alamatGambar = results[i];
+                    }
+                }, function (error) {
+                    console.log('Error: ' + error);
+                }
+            );
+        };
+
+        $scope.daftar = function(){
+            $scope.showLoading();
+            var fileURL = $scope.alamatGambar;
+            var win = function (r) {
+                console.log("Code = " + r.responseCode);
+                console.log("Response = " + r.response);
+                console.log("Sent = " + r.bytesSent);
+                $scope.hideLoading();
+            };
+
+            var fail = function (error) {
+                //alert("An error has occurred: Code = " + error.code);
+                console.log("upload error source " + error.source);
+                console.log("upload error target " + error.target);
+            };
+
+            var options = new FileUploadOptions();
+            options.fileKey = "file";
+            options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpg";
+
+            var params = {};
+            params.username = $scope.data.username.toLowerCase();
+            params.value2 = "param";
+
+            options.params = params;
+
+            var ft = new FileTransfer();
+            ft.upload(fileURL, encodeURI("http://crevion.net/cerdascermat/unggah.php"), win, fail, options);
+
+            LoginService.daftarUser($scope.data.username.toLowerCase(), $scope.data.password).success(function () {
+                $scope.hideLoading();
+                localStorage.setItem("username", $scope.data.username.toLowerCase());
+                localStorage.setItem("password", $scope.data.password);
+                socket.emit('successlogin', {username: $scope.data.username.toLowerCase()});
+                socket.on('auth', function (auth) {
+                    if (auth == 1) {
+                        $ionicHistory.nextViewOptions({
+                            disableBack: true
+                        });
+                        $ionicPopup.alert({
+                            title: 'Selamat!',
+                            template: 'Pendaftaran Berhasil'
+                        });
+                        $state.go('tab.dash');
+                    }
+                    else {
+                        $scope.template = 'User sudah login';
+                        $ionicPopup.alert({
+                            title: 'Login gagal!',
+                            template: $scope.template
+                        });
+                    }
+                })
+
+            }).error(function (data) {
+                $scope.hideLoading();
+                if (data == '0') {
+                    $scope.template = 'Terjadi kesalahan koneksi, atau terjadi gangguan pada server!';
+                }
+                else if (data == '1') {
+                    $scope.template = 'Username atau password salah';
+                }
+                $ionicPopup.alert({
+                    title: 'Pendaftaran gagal!',
+                    template: $scope.template
+                });
+                localStorage.setItem("username", "");
+                localStorage.setItem("password", "");
             });
         }
     }])
-    .controller('ProfileCtrl', function ($scope) {
-        $scope.posts = [];
-        for (var i = 0; i < 7; i++) {
-            // Fake a date
-            var date = (+new Date) - (i * 1000 * 60 * 60);
-            $scope.posts.push({
-                created_at: date,
-                text: 'Doing a bit of ' + ((Math.floor(Math.random() * 2) === 1) ? 'that' : 'this')
-            });
-        }
-    })
 ;

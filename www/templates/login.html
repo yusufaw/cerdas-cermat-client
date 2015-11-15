@@ -13,31 +13,26 @@
                 <input type="password" class="text-center" ng-model="data.password">
             </label>
         </div>
+        <div ng-show="!isLogin" class="text-center">
+            <div class="row-center">
+                <button  class="button btn-primary" ng-click="pilihGambar()">Pilih Avatar</button>
+            </div>
+            <div class="row-center">
+                <img id="profile-image" style="width: 50%; height: auto" src="{{alamatGambar}}" />
+            </div>
+        </div><br>
         <div class="text-center">
             <div class="row-center">
-                <button class="button-large btn-login" ng-click="login()">Masuk</button>
+                <button ng-show="isLogin" class="button-large btn-login" ng-click="login()">Masuk Sekarang</button>
+                <button  ng-show="!isLogin" class="button-large btn-merah" ng-click="daftar()">Daftar Sekarang</button>
             </div>
         </div>
-        <!--<br><br><br><br><br><br>-->
-
-        <!--<div class="row-center text-center" ng-show="!isEditIp">-->
-            <!--{{url}}-->
-        <!--</div>-->
-        <!--<div class="list list-inset" ng-show="isEditIp">-->
-
-                <!--<label class="item item-input input-lg text-center">-->
-                    <!--<input type="text" class="text-center" ng-model="url">-->
-                <!--</label>-->
-
-        <!--</div>-->
-        <!--<div class="row text-center">-->
-            <!--&lt;!&ndash;<div class="col row-center">&ndash;&gt;-->
-            <!--&lt;!&ndash;<button class="button btn-merah" ng-click="login()">Daftar</button>&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-            <!--<div class="col row-center">-->
-                <!--<button class="button btn-merah" ng-click="editIp(url)">Edit IP</button>-->
-            <!--</div>-->
-        <!--</div>-->
+        <br>
+        <div class="text-center">
+            <div class="row-center">
+                <button ng-show="isLogin" class="button-small btn-merah" ng-click="isLogin=false">Daftar</button>
+                <button ng-show="!isLogin" class="button-small btn-login" ng-click="isLogin=true">Masuk</button>
+            </div>
+        </div>
     </ion-content>
 </ion-view>
