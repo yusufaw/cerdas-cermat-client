@@ -8,7 +8,7 @@
               <ion-item class=" item-icon-right" item-type="item-text-wrap" ng-repeat="data in riwayat">
                   <!--<img ng-src="assets/calendar.png"/>-->
                   <h2>{{data.u[0]}} : {{data.p[0]}} vs {{data.p[1]}} : {{data.u[1]}}</h2>
-                  <p><span class="ion-calendar"></span> {{data.d}}</p>
+                  <p><span class="ion-calendar"></span> {{setTanggal(data.d)}}</p>
                   <i class="icon icon-accessory"></i>
               </ion-item>
           </ion-list>

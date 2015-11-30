@@ -488,8 +488,10 @@ angular.module('starter.controllers', [])
                     playTimer(document.getElementById('playTimer'));
                 }
                 else {
-                    $scope.stopFightBabak2();
-                    $scope.jawabBabak2('noChoose');
+                    if ($scope.isShift) {
+                        $scope.stopFightBabak2();
+                        $scope.jawabBabak2('noChoose');
+                    }
                 }
             }, 1000);
         };
@@ -514,7 +516,10 @@ angular.module('starter.controllers', [])
                     playTimer(document.getElementById('playTimer'));
                 }
                 else {
-                    $scope.jawabBabak2("noAnswer");
+                    if ($scope.isShift) {
+                        $scope.stopAnsweringBabak2();
+                        $scope.jawabBabak2("noAnswer");
+                    }
                 }
             }, 1000);
         };
@@ -904,9 +909,15 @@ angular.module('starter.controllers', [])
         $http.get(url + '/api/match/u/' + localStorage.getItem('username')).success(function (response) {
             $scope.riwayat = response;
 
+
         }).error(function (err) {
             console.log(err);
         });
+
+        $scope.setTanggal = function(aww){
+            date =  new Date(aww);
+            return date.toDateString();
+        };
     }])
 
     .controller('LoginCtrl', ['$scope', 'LoginService', '$ionicPopup', '$state', 'socket', '$ionicHistory' ,'$rootScope','$ionicLoading', function ($scope, LoginService, $ionicPopup, $state, socket, $ionicHistory, $rootScope, $ionicLoading) {
