@@ -11,7 +11,9 @@
                     <!--<br/>-->
                     <span class="profile-description">Poin : {{mypoin}}</span>
                     <br/>
-                    <span class="profile-description">Menang : 0</span><br/>
+                    <span class="profile-description">Menang : {{mymenang}}</span><br/>
+                    <span class="profile-description">Main : {{mymain}}</span><br/>
+                    <br/>
                     <br/>
                     <br/>
                     <button class="button button-balanced" ng-click="challenge()">
@@ -22,6 +24,10 @@
                     <button class="button button-assertive" ng-click="logout()">
                         Keluar
                     </button>
+
+                    <br />
+                    <br />
+                    <p>user online saat ini : {{jumlah_online}}</p>
                 </div>
             </ion-content>
         </ion-view>
