@@ -910,6 +910,7 @@ angular.module('starter.controllers', [])
     }])
 
     .controller('LoginCtrl', ['$scope', 'LoginService', '$ionicPopup', '$state', 'socket', '$ionicHistory' ,'$rootScope','$ionicLoading', function ($scope, LoginService, $ionicPopup, $state, socket, $ionicHistory, $rootScope, $ionicLoading) {
+        $scope.isLogin = true;
         $scope.showLoading = function () {
             $ionicLoading.show({
                 template: 'loading...'
