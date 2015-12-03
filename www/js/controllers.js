@@ -34,7 +34,8 @@ angular.module('starter.controllers', [])
         var imgWin = "img/win-icon.png";
         var imgLose = "img/lose-icon.png";
         var state = 0; // status babak ke berapa
-        $scope.langkah = 0;
+        var langkah = 0;
+        $scope.oyi = 0;
         $scope.show = [10];
         $scope.button = [3];
         $scope.view = [3];
@@ -133,6 +134,10 @@ angular.module('starter.controllers', [])
                 $scope.view[i] = i == id;
             }
         }
+
+        function setLangkah (lala) {
+            $scope.oyi = $scope.oyi + (lala % 2);
+        };
 
         function playTimer(detikan) {
             move(detikan)
@@ -285,7 +290,7 @@ angular.module('starter.controllers', [])
 
         socket.on('soal babak 1', function (data) {
             state = 1;
-            ++$scope.langkah;
+            setLangkah(langkah++);
             _idSoalBabak1 = data.soal._id;
             $scope.resetFightTimer1();
             $scope.opponentAct = "";
@@ -377,7 +382,6 @@ angular.module('starter.controllers', [])
             $scope.isAkhir = 'SEMENTARA';
             setShow(2); // view tampilan pre babak 2
             $scope.waktu2Next = time2Babak2;
-            $scope.langkah = 0;
 
             if (angular.isDefined(stopTimerKeBabak2)) return;
             stopTimerKeBabak2 = $interval(function () {
@@ -398,6 +402,8 @@ angular.module('starter.controllers', [])
             socket.emit('ready babak 2', 'ok');
             setShow(1); // view tampilan full header
             setView(4);
+            langkah = 1;
+            $scope.oyi = 0;
         }
 
         socket.on('ready other babak 2', function () {
@@ -406,7 +412,7 @@ angular.module('starter.controllers', [])
 
         socket.on('pilihan soal', function (data) {
             state = 2;
-            ++$scope.langkah;
+            setLangkah(langkah++);
             var ele = document.getElementsByClassName("inputPilihan");
             //console.log('panjang input pilihan : ' + ele.length);
             for (var o = 0; o < ele.length; o++) {
@@ -575,7 +581,8 @@ angular.module('starter.controllers', [])
 
         socket.on('babak 2 done', function (data) {
             setShow(2);
-            $scope.langkah = 0;
+            $scope.langkah = 1;
+            $scope.oyi = 0;
             $scope.babakX = 'Babak 3';
             $scope.detail_ku['poinBabak2'] = $scope.detail_ku['poin'] - $scope.detail_ku['poinBabak1'];
             $scope.detail_musuh['poinBabak2'] = $scope.detail_musuh['poin'] - $scope.detail_musuh['poinBabak1'];
@@ -610,7 +617,9 @@ angular.module('starter.controllers', [])
 
         function goBabak3() {
             socket.emit('ready babak 3', 'ok');
-            setShow(1); //view tampilan full header
+
+            //setView(-1);
+            $scope.textShift = "";
         }
 
         socket.on('ready other babak 3', function () {
@@ -620,6 +629,7 @@ angular.module('starter.controllers', [])
         socket.on('grid soal', function (data) {
             $scope.images = [];
             state = 3;
+            setShow(1); //view tampilan full header
             setView(2); //view tampilan grid
             $scope.isSelesai = false;
             for (var i = 0; i < data.soal.length; i++) {
@@ -633,7 +643,7 @@ angular.module('starter.controllers', [])
             }
             $scope.resetFightBabak3();
             $scope.fightBabak3();
-            ++$scope.langkah;
+            setLangkah(langkah++);
             setShift(data.user, 'pilih pertanyaan');
         });
 
@@ -709,7 +719,7 @@ angular.module('starter.controllers', [])
 
         socket.on('babak 3 lanjut', function () {
             setView(2);
-            ++$scope.langkah;
+            setLangkah(langkah++);
             $scope.isSelesai = false;
             $scope.isShift = !$scope.isShift;
             $scope.resetFightBabak3();
@@ -748,6 +758,7 @@ angular.module('starter.controllers', [])
             $scope.poinBabak2 = true;
             $scope.poinBabak3 = true;
             $scope.langkah = 0;
+            $scope.oyi = 0;
             $scope.isAkhir = 'AKHIR';
             if ($scope.detail_ku['poin'] > $scope.detail_musuh['poin']) {
                 $scope.ikonAkhir = imgWin;
@@ -757,7 +768,7 @@ angular.module('starter.controllers', [])
                 $scope.ikonAkhir = imgLose;
                 $scope.isMenang = 'Anda kalah'
             }
-            else{
+            else {
                 $scope.ikonAkhir = imgWin;
                 $scope.isMenang = 'Permainan berakhir seri';
             }
@@ -1062,10 +1073,10 @@ angular.module('starter.controllers', [])
             $scope.alamatGambar = "";
             window.imagePicker.getPictures(
                 function (results) {
-                    for (var i = 0; i < results.length; i++) {
-                        console.log('Image URI: ' + results[i]);
-
-                    }
+                    //for (var i = 0; i < results.length; i++) {
+                    //    console.log('Image URI: ' + results[i]);
+                    //
+                    //}
                     $scope.alamatGambar = results[0];
                 }, function (error) {
                     console.log('Error: ' + error);

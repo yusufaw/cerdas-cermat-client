@@ -17,8 +17,8 @@
             <div class="row-center">
                 <button  class="button btn-primary" ng-click="pilihGambar()">Pilih Avatar</button>
             </div>
-            <div class="row-center" ng-show="alamatGambar">
-                <img id="profile-image" style="width: 50%; height: auto" src="{{alamatGambar}}" />
+            <div class="row-center">
+                <img ng-show="alamatGambar" id="profile-image" src="{{alamatGambar}}" />
             </div>
         </div><br>
         <div class="text-center">

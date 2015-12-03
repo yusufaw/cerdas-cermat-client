@@ -106,7 +106,7 @@
         <div ng-show="view[0]">
             <div style="height: 45%" class="card">
                 <div class="item item-divider calm-bg">
-                    Soal {{langkah % 2}}
+                    Soal {{oyi}}
                 </div>
                 <div class="item item-text-wrap text-center kotak-soal">
                     <div class="tulisan-soal">{{soal}}</div>
@@ -141,7 +141,7 @@
         <ion-scroll direction="y" class="sekerol" ng-show="view[1]">
             <div class="card">
                 <ion-radio ng-model="$parent.answer" ng-repeat="pilih in pilihan_soal"
-                           ng-value="'{{pilih.no}}'" class="inputPilihan">
+                           ng-value="'{{pilih.no}}'" class="inputPilihan" ng-click="doPilih(pilih.no)">
                     <div class="row">
                         <div class="col-center col-90 item-text-wrap">{{pilih.question}}</div>
                         <div class="col-10"></div>
@@ -149,9 +149,9 @@
                 </ion-radio>
                 <div class="text-center">
                     <div class="row-center">
-                        <button class="button button-positive" ng-click="doPilih(answer)">
-                            Pilih
-                        </button>
+                        <!--<button class="button button-positive" ng-click="doPilih(answer)">-->
+                            <!--Pilih-->
+                        <!--</button>-->
                         <br/>
                         <br/>
                         <br/>
