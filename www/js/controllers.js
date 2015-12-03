@@ -505,7 +505,7 @@ angular.module('starter.controllers', [])
             $scope.ndelik = false;
             $scope.isType = true;
             setView(3); //view tampilan kosong
-            $scope.textShift = 'Waktu habis! ' + (data.u.replace($scope.detail_ku['username'], 'Anda')) + ' tidak menjawab';
+            $scope.textShift = 'Waktu habis! ' + (data.u.replace($scope.detail_ku['username'], 'Anda')) + ' tidak memilih';
             if (data.username == $scope.detail_ku['username']) {
                 $scope.detail_ku['poin'] = data.poin;
                 playPoint(document.getElementById('myPoin'));
@@ -753,9 +753,13 @@ angular.module('starter.controllers', [])
                 $scope.ikonAkhir = imgWin;
                 $scope.isMenang = 'Selamat Anda menang';
             }
-            else {
+            else if ($scope.detail_ku['poin'] < $scope.detail_musuh['poin']) {
                 $scope.ikonAkhir = imgLose;
                 $scope.isMenang = 'Anda kalah'
+            }
+            else{
+                $scope.ikonAkhir = imgWin;
+                $scope.isMenang = 'Permainan berakhir seri';
             }
             setTimeout(function () {
                 $scope.stopFightBabak3();
