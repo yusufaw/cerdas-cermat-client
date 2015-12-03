@@ -1,13 +1,13 @@
 // var url = 'http://172.21.13.64:3000/';
 //var url = 'http://127.0.0.1:3000';
 //var url = 'http://10.34.241.45:3000';
-var url = 'http://192.168.1.100:3000';
+//var url = 'http://192.168.1.100:3000';
 
-//var url = 'http://cerdascermat.herokuapp.com';
+var url = 'http://cerdascermat.herokuapp.com';
 angular.module('starter.services', [])
     .factory('socket', ['$rootScope', function ($rootScope) {
-        //var socket = io.connect("https://cerdascermat.herokuapp.com:443");
-        var socket = io.connect(url);
+        var socket = io.connect("https://cerdascermat.herokuapp.com:443");
+        //var socket = io.connect(url);
 
         return {
             on: function (eventName, callback) {
