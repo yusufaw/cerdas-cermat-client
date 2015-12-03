@@ -1,5 +1,7 @@
 angular.module('starter.controllers', [])
-    .controller('DashCtrl', ['$scope', '$state', 'socket', '$ionicLoading', '$ionicHistory', '$rootScope', '$ionicModal', '$interval', 'URL', function ($scope, $state, socket, $ionicLoading, $ionicHistory, $rootScope, $ionicModal, $interval, URL) {
+    .controller('DashCtrl', ['$scope', '$state', 'socket', '$ionicLoading', '$ionicHistory', '$rootScope', '$ionicModal', '$interval', 'URL', '$ionicPopup', function ($scope, $state, socket, $ionicLoading, $ionicHistory, $rootScope, $ionicModal, $interval, URL, $ionicPopup) {
+        //var iwiw = LoginService.avatarUser('ucup');
+        //console.log(iwiw.avatar);
         var uerel = URL.get(); // mendapatkan alamat game server
         var urlImg = 'http://crevion.net/cerdascermat/img/users/'
         var stopPrePlay; // variabel untuk timer pre play
@@ -16,6 +18,8 @@ angular.module('starter.controllers', [])
         var mandek2; // variabel untuk timer menjawab soal babak 2
         var mandek3; // variabel untuk timer menjawab soal babak 3
         var noSoal = 0; //no soal untuk jawab kotak babak 3 yang terpilih
+        var stopSearching;
+        var timeSearching = 20;
         var secondPrePlay = 10;
         var time2Babak2 = 10;
         var time2Babak3 = 10;
@@ -36,21 +40,24 @@ angular.module('starter.controllers', [])
         $scope.view = [3];
         $scope.steps = 0;
         $scope.username = localStorage.getItem("username");
-        console.log('Hello, this is dash page!');
-        $scope.foto_profil = urlImg + $scope.username + '.jpg';
+        $scope.foto_profil = '#';
+
         $scope.mypoin = 0;
         $scope.isEditIp = false;
 
         socket.emit('ready tab', 'ok');
         socket.on('my data', function (myData) {
+            console.log('hemm');
             $scope.mypoin = myData.mypoin;
             $scope.mymain = myData.mymain;
             $scope.mymenang = myData.mymenang;
-            console.log($scope.mypoin);
+            $scope.gambarKu = myData.myavatar;
+            $scope.foto_profil = urlImg + myData.myavatar;
+            console.log(myData);
         });
 
         socket.on('all user', function (data) {
-           $scope.jumlah_online = data;
+            $scope.jumlah_online = data;
         });
         $scope.challenge = function () {
 
@@ -60,6 +67,20 @@ angular.module('starter.controllers', [])
             else {
                 socket.emit('search', 'ok');
                 $scope.showLoading();
+                $scope.waktuSearcing = timeSearching;
+                if (angular.isDefined(stopSearching)) return;
+                stopSearching = $interval(function () {
+                    if ($scope.waktuSearcing > 0) {
+                        $scope.waktuSearcing--;
+                    } else {
+                        socket.emit('unsearch', 'ok');
+                        $scope.hideLoading();
+                        $ionicPopup.alert({
+                            title: 'Gagal',
+                            template: 'Tidak menemukan lawan'
+                        });
+                    }
+                }, 1000);
             }
         };
 
@@ -84,12 +105,16 @@ angular.module('starter.controllers', [])
 
         $scope.showLoading = function () {
             $ionicLoading.show({
-                template: 'Mencari musuh'
+                template: 'Mencari lawan'
             });
         };
 
         $scope.hideLoading = function () {
-            $ionicLoading.hide();
+            if (angular.isDefined(stopSearching)) {
+                $interval.cancel(stopSearching);
+                stopSearching = undefined;
+                $ionicLoading.hide();
+            }
         };
 
         socket.on('halo', function () {
@@ -142,11 +167,14 @@ angular.module('starter.controllers', [])
         }
 
         socket.on('ready wait other', function (data) {
+            //console.log(data);
             socket.emit('all ready wait', 'ok');
             $scope.detail_musuh = {
                 'username': data.username,
                 'totalPoin': data.poin,
-                'poin': data.poin,
+                'totalMenang': data.menang,
+                'gambar': data.avatar,
+                'poin': 0,
                 'poinBabak1': 0,
                 'poinBabak2': 0,
                 'poinBabak3': 0
@@ -155,12 +183,14 @@ angular.module('starter.controllers', [])
             $scope.detail_ku = {
                 'username': localStorage.getItem("username"),
                 'totalPoin': $scope.mypoin,
+                'totalMenang': $scope.mymenang,
+                'gambar': $scope.gambarKu,
                 'poin': 0,
                 'poinBabak1': 0,
                 'poinBabak2': 0,
                 'poinBabak3': 0
             };
-            $scope.foto_profil_musuh = urlImg + data.username + '.jpg';
+            $scope.foto_profil_musuh = urlImg + data.avatar;
         });
 
         socket.on('ready wait all', function () {
@@ -378,7 +408,7 @@ angular.module('starter.controllers', [])
             state = 2;
             ++$scope.langkah;
             var ele = document.getElementsByClassName("inputPilihan");
-            console.log('panjang input pilihan : ' + ele.length);
+            //console.log('panjang input pilihan : ' + ele.length);
             for (var o = 0; o < ele.length; o++) {
                 ele[o].checked = false;
                 console.log(ele[o].checked);
@@ -730,6 +760,7 @@ angular.module('starter.controllers', [])
             setTimeout(function () {
                 $scope.stopFightBabak3();
                 setShow(2);
+
                 $scope.babakX = 'Kembali ke Home';
                 $scope.textAboutBabak = '';
                 $scope.waktu2Next = secondDone;
@@ -742,7 +773,6 @@ angular.module('starter.controllers', [])
                         if (angular.isDefined(stopKeHome)) {
                             $interval.cancel(stopKeHome);
                             stopKeHome = undefined;
-                            socket.emit('ready tab', 'ok');
                             $scope.$emit('todo:listChanged');
                             socket.emit('game done', $scope.timer);
                             socket.emit('wis bar');
@@ -942,12 +972,12 @@ angular.module('starter.controllers', [])
         };
 
         //$scope.alamatGambar = 'img/icon_user.png';
-        console.log('ini halaman login');
+        //console.log('ini halaman login');
         if (localStorage.getItem("username") != "") {
             $scope.showLoading();
             LoginService.loginUser(localStorage.getItem("username"), localStorage.getItem("password")).success(function () {
                 socket.emit('successlogin', {username: localStorage.getItem("username")});
-                console.log(localStorage.username + ' berhasil login');
+                //console.log(localStorage.username + ' berhasil login');
                 socket.on('auth', function (auth) {
                     if (auth == 1) {
                         $ionicHistory.nextViewOptions({
@@ -1040,13 +1070,13 @@ angular.module('starter.controllers', [])
         };
 
         $scope.daftar = function () {
-            if(!$scope.data.username || !$scope.data.password || !$scope.alamatGambar){
+            if (!$scope.data.username || !$scope.data.password || !$scope.alamatGambar) {
                 $ionicPopup.alert({
                     title: 'Gagal!',
                     template: 'Username dan password harus diisi dan silahkan pilih avatar anda'
                 });
             }
-            else{
+            else {
                 $scope.showLoading();
                 var fileURL = $scope.alamatGambar;
                 console.log($scope.alamatGambar);
@@ -1065,6 +1095,7 @@ angular.module('starter.controllers', [])
                 var options = new FileUploadOptions();
                 options.fileKey = "file";
                 options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+                console.log("name : " + options.fileName);
                 options.mimeType = "image/jpg";
 
                 var params = {};
@@ -1077,7 +1108,7 @@ angular.module('starter.controllers', [])
 
                 ft.upload(fileURL, encodeURI("http://crevion.net/cerdascermat/unggah.php"), win, fail, options);
 
-                LoginService.daftarUser($scope.data.username.toLowerCase(), $scope.data.password).success(function () {
+                LoginService.daftarUser($scope.data.username.toLowerCase(), $scope.data.password, options.fileName).success(function () {
                     $scope.hideLoading();
                     localStorage.setItem("username", $scope.data.username.toLowerCase());
                     localStorage.setItem("password", $scope.data.password);
@@ -1118,15 +1149,6 @@ angular.module('starter.controllers', [])
                     localStorage.setItem("password", "");
                 });
             }
-
-
-
-
-
-
-
-
-
         }
     }])
 ;
